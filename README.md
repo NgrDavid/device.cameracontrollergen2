@@ -1,8 +1,8 @@
-# Harp Camera Controlelr
+# Harp Camera Controller
 
 This device contains the necessary circuitry to synchronously control and supply 2 cameras.
 
-![DeviceFront](Pics/camera controller (1).jpg)
+![DeviceFront](Pics/camera_controller_(1).jpg)
 
 # Licensing
 
