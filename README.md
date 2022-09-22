@@ -2,6 +2,8 @@
 
 This device contains the necessary circuitry to synchronously control and supply 2 cameras.
 
+![DeviceFront](Pics/camera controller (1).jpg)
+
 # Licensing
 
 The code, designs, documentation, and photos available in this repository is free: you can redistribute it and/or modify it under the terms of the used license.
