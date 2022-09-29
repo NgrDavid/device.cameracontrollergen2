@@ -217,7 +217,12 @@ void core_callback_visualen_to_off(void)
 /************************************************************************/
 /* Callbacks: Change on the operation mode                              */
 /************************************************************************/
-void core_callback_device_to_standby(void) {}
+void core_callback_device_to_standby(void)
+{
+	app_regs.REG_START_AND_STOP = B_STOP_CAM0 | B_STOP_CAM1;
+	app_write_REG_START_AND_STOP(&app_regs.REG_START_AND_STOP);
+	
+}
 void core_callback_device_to_active(void) {}
 void core_callback_device_to_enchanced_active(void) {}
 void core_callback_device_to_speed(void) {}
