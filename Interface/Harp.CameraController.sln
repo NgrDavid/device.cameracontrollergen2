@@ -1,0 +1,25 @@
+
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.3.32825.248
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{618C6851-EFC7-41FF-B300-1BB52CA6573A}") = "Harp.CameraController", "Harp.CameraController\Harp.CameraController.csproj", "{24575171-CE0D-4157-9143-93B3B27E070D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{24575171-CE0D-4157-9143-93B3B27E070D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{24575171-CE0D-4157-9143-93B3B27E070D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{24575171-CE0D-4157-9143-93B3B27E070D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{24575171-CE0D-4157-9143-93B3B27E070D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {44A60087-B101-469C-8EF2-CB9D7768B552}
+	EndGlobalSection
+EndGlobal
