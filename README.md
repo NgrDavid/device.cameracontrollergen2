@@ -2,7 +2,7 @@
 
 This device contains the necessary circuitry to synchronously control and supply 2 cameras.
 
-![DeviceFront](Pics/camera_controller_(1).jpg)
+![DeviceFront](Assets/device.jpg)
 
 # Licensing
 
