@@ -61,7 +61,7 @@ namespace Harp.CameraController
             { 61, typeof(OutputClear) },
             { 62, typeof(OutputToggle) },
             { 63, typeof(OutputState) },
-            { 64, typeof(DigitalInput) }
+            { 64, typeof(InputState) }
         };
     }
 
@@ -114,7 +114,7 @@ namespace Harp.CameraController
     /// <seealso cref="OutputClear"/>
     /// <seealso cref="OutputToggle"/>
     /// <seealso cref="OutputState"/>
-    /// <seealso cref="DigitalInput"/>
+    /// <seealso cref="InputState"/>
     [XmlInclude(typeof(Cam0Event))]
     [XmlInclude(typeof(Cam1Event))]
     [XmlInclude(typeof(ConfigureCam0Event))]
@@ -139,7 +139,7 @@ namespace Harp.CameraController
     [XmlInclude(typeof(OutputClear))]
     [XmlInclude(typeof(OutputToggle))]
     [XmlInclude(typeof(OutputState))]
-    [XmlInclude(typeof(DigitalInput))]
+    [XmlInclude(typeof(InputState))]
     [Description("Filters register-specific messages reported by the CameraController device.")]
     public class FilterMessage : FilterMessageBuilder, INamedElement
     {
@@ -185,7 +185,7 @@ namespace Harp.CameraController
     /// <seealso cref="OutputClear"/>
     /// <seealso cref="OutputToggle"/>
     /// <seealso cref="OutputState"/>
-    /// <seealso cref="DigitalInput"/>
+    /// <seealso cref="InputState"/>
     [XmlInclude(typeof(Cam0Event))]
     [XmlInclude(typeof(Cam1Event))]
     [XmlInclude(typeof(ConfigureCam0Event))]
@@ -210,7 +210,7 @@ namespace Harp.CameraController
     [XmlInclude(typeof(OutputClear))]
     [XmlInclude(typeof(OutputToggle))]
     [XmlInclude(typeof(OutputState))]
-    [XmlInclude(typeof(DigitalInput))]
+    [XmlInclude(typeof(InputState))]
     [XmlInclude(typeof(TimestampedCam0Event))]
     [XmlInclude(typeof(TimestampedCam1Event))]
     [XmlInclude(typeof(TimestampedConfigureCam0Event))]
@@ -235,7 +235,7 @@ namespace Harp.CameraController
     [XmlInclude(typeof(TimestampedOutputClear))]
     [XmlInclude(typeof(TimestampedOutputToggle))]
     [XmlInclude(typeof(TimestampedOutputState))]
-    [XmlInclude(typeof(TimestampedDigitalInput))]
+    [XmlInclude(typeof(TimestampedInputState))]
     [Description("Filters and selects specific messages reported by the CameraController device.")]
     public partial class Parse : ParseBuilder, INamedElement
     {
@@ -278,7 +278,7 @@ namespace Harp.CameraController
     /// <seealso cref="OutputClear"/>
     /// <seealso cref="OutputToggle"/>
     /// <seealso cref="OutputState"/>
-    /// <seealso cref="DigitalInput"/>
+    /// <seealso cref="InputState"/>
     [XmlInclude(typeof(Cam0Event))]
     [XmlInclude(typeof(Cam1Event))]
     [XmlInclude(typeof(ConfigureCam0Event))]
@@ -303,7 +303,7 @@ namespace Harp.CameraController
     [XmlInclude(typeof(OutputClear))]
     [XmlInclude(typeof(OutputToggle))]
     [XmlInclude(typeof(OutputState))]
-    [XmlInclude(typeof(DigitalInput))]
+    [XmlInclude(typeof(InputState))]
     [Description("Formats a sequence of values as specific CameraController register messages.")]
     public partial class Format : FormatBuilder, INamedElement
     {
@@ -344,9 +344,9 @@ namespace Harp.CameraController
         /// </summary>
         /// <param name="message">A <see cref="HarpMessage"/> object representing the register message.</param>
         /// <returns>A value representing the message payload.</returns>
-        public static byte GetPayload(HarpMessage message)
+        public static CameraEvents GetPayload(HarpMessage message)
         {
-            return message.GetPayloadByte();
+            return (CameraEvents)message.GetPayloadByte();
         }
 
         /// <summary>
@@ -354,9 +354,10 @@ namespace Harp.CameraController
         /// </summary>
         /// <param name="message">A <see cref="HarpMessage"/> object representing the register message.</param>
         /// <returns>A value representing the timestamped message payload.</returns>
-        public static Timestamped<byte> GetTimestampedPayload(HarpMessage message)
+        public static Timestamped<CameraEvents> GetTimestampedPayload(HarpMessage message)
         {
-            return message.GetTimestampedPayloadByte();
+            var payload = message.GetTimestampedPayloadByte();
+            return Timestamped.Create((CameraEvents)payload.Value, payload.Seconds);
         }
 
         /// <summary>
@@ -368,9 +369,9 @@ namespace Harp.CameraController
         /// A <see cref="HarpMessage"/> object for the <see cref="Cam0Event"/> register
         /// with the specified message type and payload.
         /// </returns>
-        public static HarpMessage FromPayload(MessageType messageType, byte value)
+        public static HarpMessage FromPayload(MessageType messageType, CameraEvents value)
         {
-            return HarpMessage.FromByte(Address, messageType, value);
+            return HarpMessage.FromByte(Address, messageType, (byte)value);
         }
 
         /// <summary>
@@ -384,9 +385,9 @@ namespace Harp.CameraController
         /// A <see cref="HarpMessage"/> object for the <see cref="Cam0Event"/> register
         /// with the specified message type, timestamp, and payload.
         /// </returns>
-        public static HarpMessage FromPayload(double timestamp, MessageType messageType, byte value)
+        public static HarpMessage FromPayload(double timestamp, MessageType messageType, CameraEvents value)
         {
-            return HarpMessage.FromByte(Address, timestamp, messageType, value);
+            return HarpMessage.FromByte(Address, timestamp, messageType, (byte)value);
         }
     }
 
@@ -408,7 +409,7 @@ namespace Harp.CameraController
         /// </summary>
         /// <param name="message">A <see cref="HarpMessage"/> object representing the register message.</param>
         /// <returns>A value representing the timestamped message payload.</returns>
-        public static Timestamped<byte> GetPayload(HarpMessage message)
+        public static Timestamped<CameraEvents> GetPayload(HarpMessage message)
         {
             return Cam0Event.GetTimestampedPayload(message);
         }
@@ -440,9 +441,9 @@ namespace Harp.CameraController
         /// </summary>
         /// <param name="message">A <see cref="HarpMessage"/> object representing the register message.</param>
         /// <returns>A value representing the message payload.</returns>
-        public static byte GetPayload(HarpMessage message)
+        public static CameraEvents GetPayload(HarpMessage message)
         {
-            return message.GetPayloadByte();
+            return (CameraEvents)message.GetPayloadByte();
         }
 
         /// <summary>
@@ -450,9 +451,10 @@ namespace Harp.CameraController
         /// </summary>
         /// <param name="message">A <see cref="HarpMessage"/> object representing the register message.</param>
         /// <returns>A value representing the timestamped message payload.</returns>
-        public static Timestamped<byte> GetTimestampedPayload(HarpMessage message)
+        public static Timestamped<CameraEvents> GetTimestampedPayload(HarpMessage message)
         {
-            return message.GetTimestampedPayloadByte();
+            var payload = message.GetTimestampedPayloadByte();
+            return Timestamped.Create((CameraEvents)payload.Value, payload.Seconds);
         }
 
         /// <summary>
@@ -464,9 +466,9 @@ namespace Harp.CameraController
         /// A <see cref="HarpMessage"/> object for the <see cref="Cam1Event"/> register
         /// with the specified message type and payload.
         /// </returns>
-        public static HarpMessage FromPayload(MessageType messageType, byte value)
+        public static HarpMessage FromPayload(MessageType messageType, CameraEvents value)
         {
-            return HarpMessage.FromByte(Address, messageType, value);
+            return HarpMessage.FromByte(Address, messageType, (byte)value);
         }
 
         /// <summary>
@@ -480,9 +482,9 @@ namespace Harp.CameraController
         /// A <see cref="HarpMessage"/> object for the <see cref="Cam1Event"/> register
         /// with the specified message type, timestamp, and payload.
         /// </returns>
-        public static HarpMessage FromPayload(double timestamp, MessageType messageType, byte value)
+        public static HarpMessage FromPayload(double timestamp, MessageType messageType, CameraEvents value)
         {
-            return HarpMessage.FromByte(Address, timestamp, messageType, value);
+            return HarpMessage.FromByte(Address, timestamp, messageType, (byte)value);
         }
     }
 
@@ -504,7 +506,7 @@ namespace Harp.CameraController
         /// </summary>
         /// <param name="message">A <see cref="HarpMessage"/> object representing the register message.</param>
         /// <returns>A value representing the timestamped message payload.</returns>
-        public static Timestamped<byte> GetPayload(HarpMessage message)
+        public static Timestamped<CameraEvents> GetPayload(HarpMessage message)
         {
             return Cam1Event.GetTimestampedPayload(message);
         }
@@ -536,9 +538,9 @@ namespace Harp.CameraController
         /// </summary>
         /// <param name="message">A <see cref="HarpMessage"/> object representing the register message.</param>
         /// <returns>A value representing the message payload.</returns>
-        public static byte GetPayload(HarpMessage message)
+        public static EventConfiguration GetPayload(HarpMessage message)
         {
-            return message.GetPayloadByte();
+            return (EventConfiguration)message.GetPayloadByte();
         }
 
         /// <summary>
@@ -546,9 +548,10 @@ namespace Harp.CameraController
         /// </summary>
         /// <param name="message">A <see cref="HarpMessage"/> object representing the register message.</param>
         /// <returns>A value representing the timestamped message payload.</returns>
-        public static Timestamped<byte> GetTimestampedPayload(HarpMessage message)
+        public static Timestamped<EventConfiguration> GetTimestampedPayload(HarpMessage message)
         {
-            return message.GetTimestampedPayloadByte();
+            var payload = message.GetTimestampedPayloadByte();
+            return Timestamped.Create((EventConfiguration)payload.Value, payload.Seconds);
         }
 
         /// <summary>
@@ -560,9 +563,9 @@ namespace Harp.CameraController
         /// A <see cref="HarpMessage"/> object for the <see cref="ConfigureCam0Event"/> register
         /// with the specified message type and payload.
         /// </returns>
-        public static HarpMessage FromPayload(MessageType messageType, byte value)
+        public static HarpMessage FromPayload(MessageType messageType, EventConfiguration value)
         {
-            return HarpMessage.FromByte(Address, messageType, value);
+            return HarpMessage.FromByte(Address, messageType, (byte)value);
         }
 
         /// <summary>
@@ -576,9 +579,9 @@ namespace Harp.CameraController
         /// A <see cref="HarpMessage"/> object for the <see cref="ConfigureCam0Event"/> register
         /// with the specified message type, timestamp, and payload.
         /// </returns>
-        public static HarpMessage FromPayload(double timestamp, MessageType messageType, byte value)
+        public static HarpMessage FromPayload(double timestamp, MessageType messageType, EventConfiguration value)
         {
-            return HarpMessage.FromByte(Address, timestamp, messageType, value);
+            return HarpMessage.FromByte(Address, timestamp, messageType, (byte)value);
         }
     }
 
@@ -600,7 +603,7 @@ namespace Harp.CameraController
         /// </summary>
         /// <param name="message">A <see cref="HarpMessage"/> object representing the register message.</param>
         /// <returns>A value representing the timestamped message payload.</returns>
-        public static Timestamped<byte> GetPayload(HarpMessage message)
+        public static Timestamped<EventConfiguration> GetPayload(HarpMessage message)
         {
             return ConfigureCam0Event.GetTimestampedPayload(message);
         }
@@ -632,9 +635,9 @@ namespace Harp.CameraController
         /// </summary>
         /// <param name="message">A <see cref="HarpMessage"/> object representing the register message.</param>
         /// <returns>A value representing the message payload.</returns>
-        public static byte GetPayload(HarpMessage message)
+        public static EventConfiguration GetPayload(HarpMessage message)
         {
-            return message.GetPayloadByte();
+            return (EventConfiguration)message.GetPayloadByte();
         }
 
         /// <summary>
@@ -642,9 +645,10 @@ namespace Harp.CameraController
         /// </summary>
         /// <param name="message">A <see cref="HarpMessage"/> object representing the register message.</param>
         /// <returns>A value representing the timestamped message payload.</returns>
-        public static Timestamped<byte> GetTimestampedPayload(HarpMessage message)
+        public static Timestamped<EventConfiguration> GetTimestampedPayload(HarpMessage message)
         {
-            return message.GetTimestampedPayloadByte();
+            var payload = message.GetTimestampedPayloadByte();
+            return Timestamped.Create((EventConfiguration)payload.Value, payload.Seconds);
         }
 
         /// <summary>
@@ -656,9 +660,9 @@ namespace Harp.CameraController
         /// A <see cref="HarpMessage"/> object for the <see cref="ConfigureCam1Event"/> register
         /// with the specified message type and payload.
         /// </returns>
-        public static HarpMessage FromPayload(MessageType messageType, byte value)
+        public static HarpMessage FromPayload(MessageType messageType, EventConfiguration value)
         {
-            return HarpMessage.FromByte(Address, messageType, value);
+            return HarpMessage.FromByte(Address, messageType, (byte)value);
         }
 
         /// <summary>
@@ -672,9 +676,9 @@ namespace Harp.CameraController
         /// A <see cref="HarpMessage"/> object for the <see cref="ConfigureCam1Event"/> register
         /// with the specified message type, timestamp, and payload.
         /// </returns>
-        public static HarpMessage FromPayload(double timestamp, MessageType messageType, byte value)
+        public static HarpMessage FromPayload(double timestamp, MessageType messageType, EventConfiguration value)
         {
-            return HarpMessage.FromByte(Address, timestamp, messageType, value);
+            return HarpMessage.FromByte(Address, timestamp, messageType, (byte)value);
         }
     }
 
@@ -696,7 +700,7 @@ namespace Harp.CameraController
         /// </summary>
         /// <param name="message">A <see cref="HarpMessage"/> object representing the register message.</param>
         /// <returns>A value representing the timestamped message payload.</returns>
-        public static Timestamped<byte> GetPayload(HarpMessage message)
+        public static Timestamped<EventConfiguration> GetPayload(HarpMessage message)
         {
             return ConfigureCam1Event.GetTimestampedPayload(message);
         }
@@ -728,9 +732,9 @@ namespace Harp.CameraController
         /// </summary>
         /// <param name="message">A <see cref="HarpMessage"/> object representing the register message.</param>
         /// <returns>A value representing the message payload.</returns>
-        public static byte GetPayload(HarpMessage message)
+        public static CameraFlags GetPayload(HarpMessage message)
         {
-            return message.GetPayloadByte();
+            return (CameraFlags)message.GetPayloadByte();
         }
 
         /// <summary>
@@ -738,9 +742,10 @@ namespace Harp.CameraController
         /// </summary>
         /// <param name="message">A <see cref="HarpMessage"/> object representing the register message.</param>
         /// <returns>A value representing the timestamped message payload.</returns>
-        public static Timestamped<byte> GetTimestampedPayload(HarpMessage message)
+        public static Timestamped<CameraFlags> GetTimestampedPayload(HarpMessage message)
         {
-            return message.GetTimestampedPayloadByte();
+            var payload = message.GetTimestampedPayloadByte();
+            return Timestamped.Create((CameraFlags)payload.Value, payload.Seconds);
         }
 
         /// <summary>
@@ -752,9 +757,9 @@ namespace Harp.CameraController
         /// A <see cref="HarpMessage"/> object for the <see cref="StartAndStop"/> register
         /// with the specified message type and payload.
         /// </returns>
-        public static HarpMessage FromPayload(MessageType messageType, byte value)
+        public static HarpMessage FromPayload(MessageType messageType, CameraFlags value)
         {
-            return HarpMessage.FromByte(Address, messageType, value);
+            return HarpMessage.FromByte(Address, messageType, (byte)value);
         }
 
         /// <summary>
@@ -768,9 +773,9 @@ namespace Harp.CameraController
         /// A <see cref="HarpMessage"/> object for the <see cref="StartAndStop"/> register
         /// with the specified message type, timestamp, and payload.
         /// </returns>
-        public static HarpMessage FromPayload(double timestamp, MessageType messageType, byte value)
+        public static HarpMessage FromPayload(double timestamp, MessageType messageType, CameraFlags value)
         {
-            return HarpMessage.FromByte(Address, timestamp, messageType, value);
+            return HarpMessage.FromByte(Address, timestamp, messageType, (byte)value);
         }
     }
 
@@ -792,7 +797,7 @@ namespace Harp.CameraController
         /// </summary>
         /// <param name="message">A <see cref="HarpMessage"/> object representing the register message.</param>
         /// <returns>A value representing the timestamped message payload.</returns>
-        public static Timestamped<byte> GetPayload(HarpMessage message)
+        public static Timestamped<CameraFlags> GetPayload(HarpMessage message)
         {
             return StartAndStop.GetTimestampedPayload(message);
         }
@@ -824,9 +829,9 @@ namespace Harp.CameraController
         /// </summary>
         /// <param name="message">A <see cref="HarpMessage"/> object representing the register message.</param>
         /// <returns>A value representing the message payload.</returns>
-        public static byte GetPayload(HarpMessage message)
+        public static CameraFlags GetPayload(HarpMessage message)
         {
-            return message.GetPayloadByte();
+            return (CameraFlags)message.GetPayloadByte();
         }
 
         /// <summary>
@@ -834,9 +839,10 @@ namespace Harp.CameraController
         /// </summary>
         /// <param name="message">A <see cref="HarpMessage"/> object representing the register message.</param>
         /// <returns>A value representing the timestamped message payload.</returns>
-        public static Timestamped<byte> GetTimestampedPayload(HarpMessage message)
+        public static Timestamped<CameraFlags> GetTimestampedPayload(HarpMessage message)
         {
-            return message.GetTimestampedPayloadByte();
+            var payload = message.GetTimestampedPayloadByte();
+            return Timestamped.Create((CameraFlags)payload.Value, payload.Seconds);
         }
 
         /// <summary>
@@ -848,9 +854,9 @@ namespace Harp.CameraController
         /// A <see cref="HarpMessage"/> object for the <see cref="StartAndStopTimestamped"/> register
         /// with the specified message type and payload.
         /// </returns>
-        public static HarpMessage FromPayload(MessageType messageType, byte value)
+        public static HarpMessage FromPayload(MessageType messageType, CameraFlags value)
         {
-            return HarpMessage.FromByte(Address, messageType, value);
+            return HarpMessage.FromByte(Address, messageType, (byte)value);
         }
 
         /// <summary>
@@ -864,9 +870,9 @@ namespace Harp.CameraController
         /// A <see cref="HarpMessage"/> object for the <see cref="StartAndStopTimestamped"/> register
         /// with the specified message type, timestamp, and payload.
         /// </returns>
-        public static HarpMessage FromPayload(double timestamp, MessageType messageType, byte value)
+        public static HarpMessage FromPayload(double timestamp, MessageType messageType, CameraFlags value)
         {
-            return HarpMessage.FromByte(Address, timestamp, messageType, value);
+            return HarpMessage.FromByte(Address, timestamp, messageType, (byte)value);
         }
     }
 
@@ -888,7 +894,7 @@ namespace Harp.CameraController
         /// </summary>
         /// <param name="message">A <see cref="HarpMessage"/> object representing the register message.</param>
         /// <returns>A value representing the timestamped message payload.</returns>
-        public static Timestamped<byte> GetPayload(HarpMessage message)
+        public static Timestamped<CameraFlags> GetPayload(HarpMessage message)
         {
             return StartAndStopTimestamped.GetTimestampedPayload(message);
         }
@@ -1112,9 +1118,9 @@ namespace Harp.CameraController
         /// </summary>
         /// <param name="message">A <see cref="HarpMessage"/> object representing the register message.</param>
         /// <returns>A value representing the message payload.</returns>
-        public static byte GetPayload(HarpMessage message)
+        public static TriggerSource GetPayload(HarpMessage message)
         {
-            return message.GetPayloadByte();
+            return (TriggerSource)message.GetPayloadByte();
         }
 
         /// <summary>
@@ -1122,9 +1128,10 @@ namespace Harp.CameraController
         /// </summary>
         /// <param name="message">A <see cref="HarpMessage"/> object representing the register message.</param>
         /// <returns>A value representing the timestamped message payload.</returns>
-        public static Timestamped<byte> GetTimestampedPayload(HarpMessage message)
+        public static Timestamped<TriggerSource> GetTimestampedPayload(HarpMessage message)
         {
-            return message.GetTimestampedPayloadByte();
+            var payload = message.GetTimestampedPayloadByte();
+            return Timestamped.Create((TriggerSource)payload.Value, payload.Seconds);
         }
 
         /// <summary>
@@ -1136,9 +1143,9 @@ namespace Harp.CameraController
         /// A <see cref="HarpMessage"/> object for the <see cref="TriggerConfigCam0"/> register
         /// with the specified message type and payload.
         /// </returns>
-        public static HarpMessage FromPayload(MessageType messageType, byte value)
+        public static HarpMessage FromPayload(MessageType messageType, TriggerSource value)
         {
-            return HarpMessage.FromByte(Address, messageType, value);
+            return HarpMessage.FromByte(Address, messageType, (byte)value);
         }
 
         /// <summary>
@@ -1152,9 +1159,9 @@ namespace Harp.CameraController
         /// A <see cref="HarpMessage"/> object for the <see cref="TriggerConfigCam0"/> register
         /// with the specified message type, timestamp, and payload.
         /// </returns>
-        public static HarpMessage FromPayload(double timestamp, MessageType messageType, byte value)
+        public static HarpMessage FromPayload(double timestamp, MessageType messageType, TriggerSource value)
         {
-            return HarpMessage.FromByte(Address, timestamp, messageType, value);
+            return HarpMessage.FromByte(Address, timestamp, messageType, (byte)value);
         }
     }
 
@@ -1176,7 +1183,7 @@ namespace Harp.CameraController
         /// </summary>
         /// <param name="message">A <see cref="HarpMessage"/> object representing the register message.</param>
         /// <returns>A value representing the timestamped message payload.</returns>
-        public static Timestamped<byte> GetPayload(HarpMessage message)
+        public static Timestamped<TriggerSource> GetPayload(HarpMessage message)
         {
             return TriggerConfigCam0.GetTimestampedPayload(message);
         }
@@ -1208,9 +1215,9 @@ namespace Harp.CameraController
         /// </summary>
         /// <param name="message">A <see cref="HarpMessage"/> object representing the register message.</param>
         /// <returns>A value representing the message payload.</returns>
-        public static byte GetPayload(HarpMessage message)
+        public static TriggerInverted GetPayload(HarpMessage message)
         {
-            return message.GetPayloadByte();
+            return (TriggerInverted)message.GetPayloadByte();
         }
 
         /// <summary>
@@ -1218,9 +1225,10 @@ namespace Harp.CameraController
         /// </summary>
         /// <param name="message">A <see cref="HarpMessage"/> object representing the register message.</param>
         /// <returns>A value representing the timestamped message payload.</returns>
-        public static Timestamped<byte> GetTimestampedPayload(HarpMessage message)
+        public static Timestamped<TriggerInverted> GetTimestampedPayload(HarpMessage message)
         {
-            return message.GetTimestampedPayloadByte();
+            var payload = message.GetTimestampedPayloadByte();
+            return Timestamped.Create((TriggerInverted)payload.Value, payload.Seconds);
         }
 
         /// <summary>
@@ -1232,9 +1240,9 @@ namespace Harp.CameraController
         /// A <see cref="HarpMessage"/> object for the <see cref="TriggerInvertedCam0"/> register
         /// with the specified message type and payload.
         /// </returns>
-        public static HarpMessage FromPayload(MessageType messageType, byte value)
+        public static HarpMessage FromPayload(MessageType messageType, TriggerInverted value)
         {
-            return HarpMessage.FromByte(Address, messageType, value);
+            return HarpMessage.FromByte(Address, messageType, (byte)value);
         }
 
         /// <summary>
@@ -1248,9 +1256,9 @@ namespace Harp.CameraController
         /// A <see cref="HarpMessage"/> object for the <see cref="TriggerInvertedCam0"/> register
         /// with the specified message type, timestamp, and payload.
         /// </returns>
-        public static HarpMessage FromPayload(double timestamp, MessageType messageType, byte value)
+        public static HarpMessage FromPayload(double timestamp, MessageType messageType, TriggerInverted value)
         {
-            return HarpMessage.FromByte(Address, timestamp, messageType, value);
+            return HarpMessage.FromByte(Address, timestamp, messageType, (byte)value);
         }
     }
 
@@ -1272,7 +1280,7 @@ namespace Harp.CameraController
         /// </summary>
         /// <param name="message">A <see cref="HarpMessage"/> object representing the register message.</param>
         /// <returns>A value representing the timestamped message payload.</returns>
-        public static Timestamped<byte> GetPayload(HarpMessage message)
+        public static Timestamped<TriggerInverted> GetPayload(HarpMessage message)
         {
             return TriggerInvertedCam0.GetTimestampedPayload(message);
         }
@@ -1304,9 +1312,9 @@ namespace Harp.CameraController
         /// </summary>
         /// <param name="message">A <see cref="HarpMessage"/> object representing the register message.</param>
         /// <returns>A value representing the message payload.</returns>
-        public static byte GetPayload(HarpMessage message)
+        public static StrobeSource GetPayload(HarpMessage message)
         {
-            return message.GetPayloadByte();
+            return (StrobeSource)message.GetPayloadByte();
         }
 
         /// <summary>
@@ -1314,9 +1322,10 @@ namespace Harp.CameraController
         /// </summary>
         /// <param name="message">A <see cref="HarpMessage"/> object representing the register message.</param>
         /// <returns>A value representing the timestamped message payload.</returns>
-        public static Timestamped<byte> GetTimestampedPayload(HarpMessage message)
+        public static Timestamped<StrobeSource> GetTimestampedPayload(HarpMessage message)
         {
-            return message.GetTimestampedPayloadByte();
+            var payload = message.GetTimestampedPayloadByte();
+            return Timestamped.Create((StrobeSource)payload.Value, payload.Seconds);
         }
 
         /// <summary>
@@ -1328,9 +1337,9 @@ namespace Harp.CameraController
         /// A <see cref="HarpMessage"/> object for the <see cref="StrobeSourceCam0"/> register
         /// with the specified message type and payload.
         /// </returns>
-        public static HarpMessage FromPayload(MessageType messageType, byte value)
+        public static HarpMessage FromPayload(MessageType messageType, StrobeSource value)
         {
-            return HarpMessage.FromByte(Address, messageType, value);
+            return HarpMessage.FromByte(Address, messageType, (byte)value);
         }
 
         /// <summary>
@@ -1344,9 +1353,9 @@ namespace Harp.CameraController
         /// A <see cref="HarpMessage"/> object for the <see cref="StrobeSourceCam0"/> register
         /// with the specified message type, timestamp, and payload.
         /// </returns>
-        public static HarpMessage FromPayload(double timestamp, MessageType messageType, byte value)
+        public static HarpMessage FromPayload(double timestamp, MessageType messageType, StrobeSource value)
         {
-            return HarpMessage.FromByte(Address, timestamp, messageType, value);
+            return HarpMessage.FromByte(Address, timestamp, messageType, (byte)value);
         }
     }
 
@@ -1368,7 +1377,7 @@ namespace Harp.CameraController
         /// </summary>
         /// <param name="message">A <see cref="HarpMessage"/> object representing the register message.</param>
         /// <returns>A value representing the timestamped message payload.</returns>
-        public static Timestamped<byte> GetPayload(HarpMessage message)
+        public static Timestamped<StrobeSource> GetPayload(HarpMessage message)
         {
             return StrobeSourceCam0.GetTimestampedPayload(message);
         }
@@ -1592,9 +1601,9 @@ namespace Harp.CameraController
         /// </summary>
         /// <param name="message">A <see cref="HarpMessage"/> object representing the register message.</param>
         /// <returns>A value representing the message payload.</returns>
-        public static byte GetPayload(HarpMessage message)
+        public static TriggerSource GetPayload(HarpMessage message)
         {
-            return message.GetPayloadByte();
+            return (TriggerSource)message.GetPayloadByte();
         }
 
         /// <summary>
@@ -1602,9 +1611,10 @@ namespace Harp.CameraController
         /// </summary>
         /// <param name="message">A <see cref="HarpMessage"/> object representing the register message.</param>
         /// <returns>A value representing the timestamped message payload.</returns>
-        public static Timestamped<byte> GetTimestampedPayload(HarpMessage message)
+        public static Timestamped<TriggerSource> GetTimestampedPayload(HarpMessage message)
         {
-            return message.GetTimestampedPayloadByte();
+            var payload = message.GetTimestampedPayloadByte();
+            return Timestamped.Create((TriggerSource)payload.Value, payload.Seconds);
         }
 
         /// <summary>
@@ -1616,9 +1626,9 @@ namespace Harp.CameraController
         /// A <see cref="HarpMessage"/> object for the <see cref="TriggerConfigCam1"/> register
         /// with the specified message type and payload.
         /// </returns>
-        public static HarpMessage FromPayload(MessageType messageType, byte value)
+        public static HarpMessage FromPayload(MessageType messageType, TriggerSource value)
         {
-            return HarpMessage.FromByte(Address, messageType, value);
+            return HarpMessage.FromByte(Address, messageType, (byte)value);
         }
 
         /// <summary>
@@ -1632,9 +1642,9 @@ namespace Harp.CameraController
         /// A <see cref="HarpMessage"/> object for the <see cref="TriggerConfigCam1"/> register
         /// with the specified message type, timestamp, and payload.
         /// </returns>
-        public static HarpMessage FromPayload(double timestamp, MessageType messageType, byte value)
+        public static HarpMessage FromPayload(double timestamp, MessageType messageType, TriggerSource value)
         {
-            return HarpMessage.FromByte(Address, timestamp, messageType, value);
+            return HarpMessage.FromByte(Address, timestamp, messageType, (byte)value);
         }
     }
 
@@ -1656,7 +1666,7 @@ namespace Harp.CameraController
         /// </summary>
         /// <param name="message">A <see cref="HarpMessage"/> object representing the register message.</param>
         /// <returns>A value representing the timestamped message payload.</returns>
-        public static Timestamped<byte> GetPayload(HarpMessage message)
+        public static Timestamped<TriggerSource> GetPayload(HarpMessage message)
         {
             return TriggerConfigCam1.GetTimestampedPayload(message);
         }
@@ -1688,9 +1698,9 @@ namespace Harp.CameraController
         /// </summary>
         /// <param name="message">A <see cref="HarpMessage"/> object representing the register message.</param>
         /// <returns>A value representing the message payload.</returns>
-        public static byte GetPayload(HarpMessage message)
+        public static TriggerInverted GetPayload(HarpMessage message)
         {
-            return message.GetPayloadByte();
+            return (TriggerInverted)message.GetPayloadByte();
         }
 
         /// <summary>
@@ -1698,9 +1708,10 @@ namespace Harp.CameraController
         /// </summary>
         /// <param name="message">A <see cref="HarpMessage"/> object representing the register message.</param>
         /// <returns>A value representing the timestamped message payload.</returns>
-        public static Timestamped<byte> GetTimestampedPayload(HarpMessage message)
+        public static Timestamped<TriggerInverted> GetTimestampedPayload(HarpMessage message)
         {
-            return message.GetTimestampedPayloadByte();
+            var payload = message.GetTimestampedPayloadByte();
+            return Timestamped.Create((TriggerInverted)payload.Value, payload.Seconds);
         }
 
         /// <summary>
@@ -1712,9 +1723,9 @@ namespace Harp.CameraController
         /// A <see cref="HarpMessage"/> object for the <see cref="TriggerInvertedCam1"/> register
         /// with the specified message type and payload.
         /// </returns>
-        public static HarpMessage FromPayload(MessageType messageType, byte value)
+        public static HarpMessage FromPayload(MessageType messageType, TriggerInverted value)
         {
-            return HarpMessage.FromByte(Address, messageType, value);
+            return HarpMessage.FromByte(Address, messageType, (byte)value);
         }
 
         /// <summary>
@@ -1728,9 +1739,9 @@ namespace Harp.CameraController
         /// A <see cref="HarpMessage"/> object for the <see cref="TriggerInvertedCam1"/> register
         /// with the specified message type, timestamp, and payload.
         /// </returns>
-        public static HarpMessage FromPayload(double timestamp, MessageType messageType, byte value)
+        public static HarpMessage FromPayload(double timestamp, MessageType messageType, TriggerInverted value)
         {
-            return HarpMessage.FromByte(Address, timestamp, messageType, value);
+            return HarpMessage.FromByte(Address, timestamp, messageType, (byte)value);
         }
     }
 
@@ -1752,7 +1763,7 @@ namespace Harp.CameraController
         /// </summary>
         /// <param name="message">A <see cref="HarpMessage"/> object representing the register message.</param>
         /// <returns>A value representing the timestamped message payload.</returns>
-        public static Timestamped<byte> GetPayload(HarpMessage message)
+        public static Timestamped<TriggerInverted> GetPayload(HarpMessage message)
         {
             return TriggerInvertedCam1.GetTimestampedPayload(message);
         }
@@ -1784,9 +1795,9 @@ namespace Harp.CameraController
         /// </summary>
         /// <param name="message">A <see cref="HarpMessage"/> object representing the register message.</param>
         /// <returns>A value representing the message payload.</returns>
-        public static byte GetPayload(HarpMessage message)
+        public static StrobeSource GetPayload(HarpMessage message)
         {
-            return message.GetPayloadByte();
+            return (StrobeSource)message.GetPayloadByte();
         }
 
         /// <summary>
@@ -1794,9 +1805,10 @@ namespace Harp.CameraController
         /// </summary>
         /// <param name="message">A <see cref="HarpMessage"/> object representing the register message.</param>
         /// <returns>A value representing the timestamped message payload.</returns>
-        public static Timestamped<byte> GetTimestampedPayload(HarpMessage message)
+        public static Timestamped<StrobeSource> GetTimestampedPayload(HarpMessage message)
         {
-            return message.GetTimestampedPayloadByte();
+            var payload = message.GetTimestampedPayloadByte();
+            return Timestamped.Create((StrobeSource)payload.Value, payload.Seconds);
         }
 
         /// <summary>
@@ -1808,9 +1820,9 @@ namespace Harp.CameraController
         /// A <see cref="HarpMessage"/> object for the <see cref="StrobeSourceCam1"/> register
         /// with the specified message type and payload.
         /// </returns>
-        public static HarpMessage FromPayload(MessageType messageType, byte value)
+        public static HarpMessage FromPayload(MessageType messageType, StrobeSource value)
         {
-            return HarpMessage.FromByte(Address, messageType, value);
+            return HarpMessage.FromByte(Address, messageType, (byte)value);
         }
 
         /// <summary>
@@ -1824,9 +1836,9 @@ namespace Harp.CameraController
         /// A <see cref="HarpMessage"/> object for the <see cref="StrobeSourceCam1"/> register
         /// with the specified message type, timestamp, and payload.
         /// </returns>
-        public static HarpMessage FromPayload(double timestamp, MessageType messageType, byte value)
+        public static HarpMessage FromPayload(double timestamp, MessageType messageType, StrobeSource value)
         {
-            return HarpMessage.FromByte(Address, timestamp, messageType, value);
+            return HarpMessage.FromByte(Address, timestamp, messageType, (byte)value);
         }
     }
 
@@ -1848,7 +1860,7 @@ namespace Harp.CameraController
         /// </summary>
         /// <param name="message">A <see cref="HarpMessage"/> object representing the register message.</param>
         /// <returns>A value representing the timestamped message payload.</returns>
-        public static Timestamped<byte> GetPayload(HarpMessage message)
+        public static Timestamped<StrobeSource> GetPayload(HarpMessage message)
         {
             return StrobeSourceCam1.GetTimestampedPayload(message);
         }
@@ -2072,9 +2084,9 @@ namespace Harp.CameraController
         /// </summary>
         /// <param name="message">A <see cref="HarpMessage"/> object representing the register message.</param>
         /// <returns>A value representing the message payload.</returns>
-        public static byte GetPayload(HarpMessage message)
+        public static OutputConfiguration GetPayload(HarpMessage message)
         {
-            return message.GetPayloadByte();
+            return (OutputConfiguration)message.GetPayloadByte();
         }
 
         /// <summary>
@@ -2082,9 +2094,10 @@ namespace Harp.CameraController
         /// </summary>
         /// <param name="message">A <see cref="HarpMessage"/> object representing the register message.</param>
         /// <returns>A value representing the timestamped message payload.</returns>
-        public static Timestamped<byte> GetTimestampedPayload(HarpMessage message)
+        public static Timestamped<OutputConfiguration> GetTimestampedPayload(HarpMessage message)
         {
-            return message.GetTimestampedPayloadByte();
+            var payload = message.GetTimestampedPayloadByte();
+            return Timestamped.Create((OutputConfiguration)payload.Value, payload.Seconds);
         }
 
         /// <summary>
@@ -2096,9 +2109,9 @@ namespace Harp.CameraController
         /// A <see cref="HarpMessage"/> object for the <see cref="ConfigureOutput0"/> register
         /// with the specified message type and payload.
         /// </returns>
-        public static HarpMessage FromPayload(MessageType messageType, byte value)
+        public static HarpMessage FromPayload(MessageType messageType, OutputConfiguration value)
         {
-            return HarpMessage.FromByte(Address, messageType, value);
+            return HarpMessage.FromByte(Address, messageType, (byte)value);
         }
 
         /// <summary>
@@ -2112,9 +2125,9 @@ namespace Harp.CameraController
         /// A <see cref="HarpMessage"/> object for the <see cref="ConfigureOutput0"/> register
         /// with the specified message type, timestamp, and payload.
         /// </returns>
-        public static HarpMessage FromPayload(double timestamp, MessageType messageType, byte value)
+        public static HarpMessage FromPayload(double timestamp, MessageType messageType, OutputConfiguration value)
         {
-            return HarpMessage.FromByte(Address, timestamp, messageType, value);
+            return HarpMessage.FromByte(Address, timestamp, messageType, (byte)value);
         }
     }
 
@@ -2136,7 +2149,7 @@ namespace Harp.CameraController
         /// </summary>
         /// <param name="message">A <see cref="HarpMessage"/> object representing the register message.</param>
         /// <returns>A value representing the timestamped message payload.</returns>
-        public static Timestamped<byte> GetPayload(HarpMessage message)
+        public static Timestamped<OutputConfiguration> GetPayload(HarpMessage message)
         {
             return ConfigureOutput0.GetTimestampedPayload(message);
         }
@@ -2168,9 +2181,9 @@ namespace Harp.CameraController
         /// </summary>
         /// <param name="message">A <see cref="HarpMessage"/> object representing the register message.</param>
         /// <returns>A value representing the message payload.</returns>
-        public static byte GetPayload(HarpMessage message)
+        public static OutputConfiguration GetPayload(HarpMessage message)
         {
-            return message.GetPayloadByte();
+            return (OutputConfiguration)message.GetPayloadByte();
         }
 
         /// <summary>
@@ -2178,9 +2191,10 @@ namespace Harp.CameraController
         /// </summary>
         /// <param name="message">A <see cref="HarpMessage"/> object representing the register message.</param>
         /// <returns>A value representing the timestamped message payload.</returns>
-        public static Timestamped<byte> GetTimestampedPayload(HarpMessage message)
+        public static Timestamped<OutputConfiguration> GetTimestampedPayload(HarpMessage message)
         {
-            return message.GetTimestampedPayloadByte();
+            var payload = message.GetTimestampedPayloadByte();
+            return Timestamped.Create((OutputConfiguration)payload.Value, payload.Seconds);
         }
 
         /// <summary>
@@ -2192,9 +2206,9 @@ namespace Harp.CameraController
         /// A <see cref="HarpMessage"/> object for the <see cref="ConfigureOutput1"/> register
         /// with the specified message type and payload.
         /// </returns>
-        public static HarpMessage FromPayload(MessageType messageType, byte value)
+        public static HarpMessage FromPayload(MessageType messageType, OutputConfiguration value)
         {
-            return HarpMessage.FromByte(Address, messageType, value);
+            return HarpMessage.FromByte(Address, messageType, (byte)value);
         }
 
         /// <summary>
@@ -2208,9 +2222,9 @@ namespace Harp.CameraController
         /// A <see cref="HarpMessage"/> object for the <see cref="ConfigureOutput1"/> register
         /// with the specified message type, timestamp, and payload.
         /// </returns>
-        public static HarpMessage FromPayload(double timestamp, MessageType messageType, byte value)
+        public static HarpMessage FromPayload(double timestamp, MessageType messageType, OutputConfiguration value)
         {
-            return HarpMessage.FromByte(Address, timestamp, messageType, value);
+            return HarpMessage.FromByte(Address, timestamp, messageType, (byte)value);
         }
     }
 
@@ -2232,7 +2246,7 @@ namespace Harp.CameraController
         /// </summary>
         /// <param name="message">A <see cref="HarpMessage"/> object representing the register message.</param>
         /// <returns>A value representing the timestamped message payload.</returns>
-        public static Timestamped<byte> GetPayload(HarpMessage message)
+        public static Timestamped<OutputConfiguration> GetPayload(HarpMessage message)
         {
             return ConfigureOutput1.GetTimestampedPayload(message);
         }
@@ -2264,9 +2278,9 @@ namespace Harp.CameraController
         /// </summary>
         /// <param name="message">A <see cref="HarpMessage"/> object representing the register message.</param>
         /// <returns>A value representing the message payload.</returns>
-        public static byte GetPayload(HarpMessage message)
+        public static DigitalOutputs GetPayload(HarpMessage message)
         {
-            return message.GetPayloadByte();
+            return (DigitalOutputs)message.GetPayloadByte();
         }
 
         /// <summary>
@@ -2274,9 +2288,10 @@ namespace Harp.CameraController
         /// </summary>
         /// <param name="message">A <see cref="HarpMessage"/> object representing the register message.</param>
         /// <returns>A value representing the timestamped message payload.</returns>
-        public static Timestamped<byte> GetTimestampedPayload(HarpMessage message)
+        public static Timestamped<DigitalOutputs> GetTimestampedPayload(HarpMessage message)
         {
-            return message.GetTimestampedPayloadByte();
+            var payload = message.GetTimestampedPayloadByte();
+            return Timestamped.Create((DigitalOutputs)payload.Value, payload.Seconds);
         }
 
         /// <summary>
@@ -2288,9 +2303,9 @@ namespace Harp.CameraController
         /// A <see cref="HarpMessage"/> object for the <see cref="OutputSet"/> register
         /// with the specified message type and payload.
         /// </returns>
-        public static HarpMessage FromPayload(MessageType messageType, byte value)
+        public static HarpMessage FromPayload(MessageType messageType, DigitalOutputs value)
         {
-            return HarpMessage.FromByte(Address, messageType, value);
+            return HarpMessage.FromByte(Address, messageType, (byte)value);
         }
 
         /// <summary>
@@ -2304,9 +2319,9 @@ namespace Harp.CameraController
         /// A <see cref="HarpMessage"/> object for the <see cref="OutputSet"/> register
         /// with the specified message type, timestamp, and payload.
         /// </returns>
-        public static HarpMessage FromPayload(double timestamp, MessageType messageType, byte value)
+        public static HarpMessage FromPayload(double timestamp, MessageType messageType, DigitalOutputs value)
         {
-            return HarpMessage.FromByte(Address, timestamp, messageType, value);
+            return HarpMessage.FromByte(Address, timestamp, messageType, (byte)value);
         }
     }
 
@@ -2328,7 +2343,7 @@ namespace Harp.CameraController
         /// </summary>
         /// <param name="message">A <see cref="HarpMessage"/> object representing the register message.</param>
         /// <returns>A value representing the timestamped message payload.</returns>
-        public static Timestamped<byte> GetPayload(HarpMessage message)
+        public static Timestamped<DigitalOutputs> GetPayload(HarpMessage message)
         {
             return OutputSet.GetTimestampedPayload(message);
         }
@@ -2360,9 +2375,9 @@ namespace Harp.CameraController
         /// </summary>
         /// <param name="message">A <see cref="HarpMessage"/> object representing the register message.</param>
         /// <returns>A value representing the message payload.</returns>
-        public static byte GetPayload(HarpMessage message)
+        public static DigitalOutputs GetPayload(HarpMessage message)
         {
-            return message.GetPayloadByte();
+            return (DigitalOutputs)message.GetPayloadByte();
         }
 
         /// <summary>
@@ -2370,9 +2385,10 @@ namespace Harp.CameraController
         /// </summary>
         /// <param name="message">A <see cref="HarpMessage"/> object representing the register message.</param>
         /// <returns>A value representing the timestamped message payload.</returns>
-        public static Timestamped<byte> GetTimestampedPayload(HarpMessage message)
+        public static Timestamped<DigitalOutputs> GetTimestampedPayload(HarpMessage message)
         {
-            return message.GetTimestampedPayloadByte();
+            var payload = message.GetTimestampedPayloadByte();
+            return Timestamped.Create((DigitalOutputs)payload.Value, payload.Seconds);
         }
 
         /// <summary>
@@ -2384,9 +2400,9 @@ namespace Harp.CameraController
         /// A <see cref="HarpMessage"/> object for the <see cref="OutputClear"/> register
         /// with the specified message type and payload.
         /// </returns>
-        public static HarpMessage FromPayload(MessageType messageType, byte value)
+        public static HarpMessage FromPayload(MessageType messageType, DigitalOutputs value)
         {
-            return HarpMessage.FromByte(Address, messageType, value);
+            return HarpMessage.FromByte(Address, messageType, (byte)value);
         }
 
         /// <summary>
@@ -2400,9 +2416,9 @@ namespace Harp.CameraController
         /// A <see cref="HarpMessage"/> object for the <see cref="OutputClear"/> register
         /// with the specified message type, timestamp, and payload.
         /// </returns>
-        public static HarpMessage FromPayload(double timestamp, MessageType messageType, byte value)
+        public static HarpMessage FromPayload(double timestamp, MessageType messageType, DigitalOutputs value)
         {
-            return HarpMessage.FromByte(Address, timestamp, messageType, value);
+            return HarpMessage.FromByte(Address, timestamp, messageType, (byte)value);
         }
     }
 
@@ -2424,7 +2440,7 @@ namespace Harp.CameraController
         /// </summary>
         /// <param name="message">A <see cref="HarpMessage"/> object representing the register message.</param>
         /// <returns>A value representing the timestamped message payload.</returns>
-        public static Timestamped<byte> GetPayload(HarpMessage message)
+        public static Timestamped<DigitalOutputs> GetPayload(HarpMessage message)
         {
             return OutputClear.GetTimestampedPayload(message);
         }
@@ -2456,9 +2472,9 @@ namespace Harp.CameraController
         /// </summary>
         /// <param name="message">A <see cref="HarpMessage"/> object representing the register message.</param>
         /// <returns>A value representing the message payload.</returns>
-        public static byte GetPayload(HarpMessage message)
+        public static DigitalOutputs GetPayload(HarpMessage message)
         {
-            return message.GetPayloadByte();
+            return (DigitalOutputs)message.GetPayloadByte();
         }
 
         /// <summary>
@@ -2466,9 +2482,10 @@ namespace Harp.CameraController
         /// </summary>
         /// <param name="message">A <see cref="HarpMessage"/> object representing the register message.</param>
         /// <returns>A value representing the timestamped message payload.</returns>
-        public static Timestamped<byte> GetTimestampedPayload(HarpMessage message)
+        public static Timestamped<DigitalOutputs> GetTimestampedPayload(HarpMessage message)
         {
-            return message.GetTimestampedPayloadByte();
+            var payload = message.GetTimestampedPayloadByte();
+            return Timestamped.Create((DigitalOutputs)payload.Value, payload.Seconds);
         }
 
         /// <summary>
@@ -2480,9 +2497,9 @@ namespace Harp.CameraController
         /// A <see cref="HarpMessage"/> object for the <see cref="OutputToggle"/> register
         /// with the specified message type and payload.
         /// </returns>
-        public static HarpMessage FromPayload(MessageType messageType, byte value)
+        public static HarpMessage FromPayload(MessageType messageType, DigitalOutputs value)
         {
-            return HarpMessage.FromByte(Address, messageType, value);
+            return HarpMessage.FromByte(Address, messageType, (byte)value);
         }
 
         /// <summary>
@@ -2496,9 +2513,9 @@ namespace Harp.CameraController
         /// A <see cref="HarpMessage"/> object for the <see cref="OutputToggle"/> register
         /// with the specified message type, timestamp, and payload.
         /// </returns>
-        public static HarpMessage FromPayload(double timestamp, MessageType messageType, byte value)
+        public static HarpMessage FromPayload(double timestamp, MessageType messageType, DigitalOutputs value)
         {
-            return HarpMessage.FromByte(Address, timestamp, messageType, value);
+            return HarpMessage.FromByte(Address, timestamp, messageType, (byte)value);
         }
     }
 
@@ -2520,7 +2537,7 @@ namespace Harp.CameraController
         /// </summary>
         /// <param name="message">A <see cref="HarpMessage"/> object representing the register message.</param>
         /// <returns>A value representing the timestamped message payload.</returns>
-        public static Timestamped<byte> GetPayload(HarpMessage message)
+        public static Timestamped<DigitalOutputs> GetPayload(HarpMessage message)
         {
             return OutputToggle.GetTimestampedPayload(message);
         }
@@ -2552,9 +2569,9 @@ namespace Harp.CameraController
         /// </summary>
         /// <param name="message">A <see cref="HarpMessage"/> object representing the register message.</param>
         /// <returns>A value representing the message payload.</returns>
-        public static byte GetPayload(HarpMessage message)
+        public static DigitalOutputs GetPayload(HarpMessage message)
         {
-            return message.GetPayloadByte();
+            return (DigitalOutputs)message.GetPayloadByte();
         }
 
         /// <summary>
@@ -2562,9 +2579,10 @@ namespace Harp.CameraController
         /// </summary>
         /// <param name="message">A <see cref="HarpMessage"/> object representing the register message.</param>
         /// <returns>A value representing the timestamped message payload.</returns>
-        public static Timestamped<byte> GetTimestampedPayload(HarpMessage message)
+        public static Timestamped<DigitalOutputs> GetTimestampedPayload(HarpMessage message)
         {
-            return message.GetTimestampedPayloadByte();
+            var payload = message.GetTimestampedPayloadByte();
+            return Timestamped.Create((DigitalOutputs)payload.Value, payload.Seconds);
         }
 
         /// <summary>
@@ -2576,9 +2594,9 @@ namespace Harp.CameraController
         /// A <see cref="HarpMessage"/> object for the <see cref="OutputState"/> register
         /// with the specified message type and payload.
         /// </returns>
-        public static HarpMessage FromPayload(MessageType messageType, byte value)
+        public static HarpMessage FromPayload(MessageType messageType, DigitalOutputs value)
         {
-            return HarpMessage.FromByte(Address, messageType, value);
+            return HarpMessage.FromByte(Address, messageType, (byte)value);
         }
 
         /// <summary>
@@ -2592,9 +2610,9 @@ namespace Harp.CameraController
         /// A <see cref="HarpMessage"/> object for the <see cref="OutputState"/> register
         /// with the specified message type, timestamp, and payload.
         /// </returns>
-        public static HarpMessage FromPayload(double timestamp, MessageType messageType, byte value)
+        public static HarpMessage FromPayload(double timestamp, MessageType messageType, DigitalOutputs value)
         {
-            return HarpMessage.FromByte(Address, timestamp, messageType, value);
+            return HarpMessage.FromByte(Address, timestamp, messageType, (byte)value);
         }
     }
 
@@ -2616,7 +2634,7 @@ namespace Harp.CameraController
         /// </summary>
         /// <param name="message">A <see cref="HarpMessage"/> object representing the register message.</param>
         /// <returns>A value representing the timestamped message payload.</returns>
-        public static Timestamped<byte> GetPayload(HarpMessage message)
+        public static Timestamped<DigitalOutputs> GetPayload(HarpMessage message)
         {
             return OutputState.GetTimestampedPayload(message);
         }
@@ -2626,95 +2644,96 @@ namespace Harp.CameraController
     /// Represents a register that specifies the state of the digital Input 0.
     /// </summary>
     [Description("Specifies the state of the digital Input 0")]
-    public partial class DigitalInput
+    public partial class InputState
     {
         /// <summary>
-        /// Represents the address of the <see cref="DigitalInput"/> register. This field is constant.
+        /// Represents the address of the <see cref="InputState"/> register. This field is constant.
         /// </summary>
         public const int Address = 64;
 
         /// <summary>
-        /// Represents the payload type of the <see cref="DigitalInput"/> register. This field is constant.
+        /// Represents the payload type of the <see cref="InputState"/> register. This field is constant.
         /// </summary>
         public const PayloadType RegisterType = PayloadType.U8;
 
         /// <summary>
-        /// Represents the length of the <see cref="DigitalInput"/> register. This field is constant.
+        /// Represents the length of the <see cref="InputState"/> register. This field is constant.
         /// </summary>
         public const int RegisterLength = 1;
 
         /// <summary>
-        /// Returns the payload data for <see cref="DigitalInput"/> register messages.
+        /// Returns the payload data for <see cref="InputState"/> register messages.
         /// </summary>
         /// <param name="message">A <see cref="HarpMessage"/> object representing the register message.</param>
         /// <returns>A value representing the message payload.</returns>
-        public static byte GetPayload(HarpMessage message)
+        public static DigitalInputs GetPayload(HarpMessage message)
         {
-            return message.GetPayloadByte();
+            return (DigitalInputs)message.GetPayloadByte();
         }
 
         /// <summary>
-        /// Returns the timestamped payload data for <see cref="DigitalInput"/> register messages.
+        /// Returns the timestamped payload data for <see cref="InputState"/> register messages.
         /// </summary>
         /// <param name="message">A <see cref="HarpMessage"/> object representing the register message.</param>
         /// <returns>A value representing the timestamped message payload.</returns>
-        public static Timestamped<byte> GetTimestampedPayload(HarpMessage message)
+        public static Timestamped<DigitalInputs> GetTimestampedPayload(HarpMessage message)
         {
-            return message.GetTimestampedPayloadByte();
+            var payload = message.GetTimestampedPayloadByte();
+            return Timestamped.Create((DigitalInputs)payload.Value, payload.Seconds);
         }
 
         /// <summary>
-        /// Returns a Harp message for the <see cref="DigitalInput"/> register.
+        /// Returns a Harp message for the <see cref="InputState"/> register.
         /// </summary>
         /// <param name="messageType">The type of the Harp message.</param>
         /// <param name="value">The value to be stored in the message payload.</param>
         /// <returns>
-        /// A <see cref="HarpMessage"/> object for the <see cref="DigitalInput"/> register
+        /// A <see cref="HarpMessage"/> object for the <see cref="InputState"/> register
         /// with the specified message type and payload.
         /// </returns>
-        public static HarpMessage FromPayload(MessageType messageType, byte value)
+        public static HarpMessage FromPayload(MessageType messageType, DigitalInputs value)
         {
-            return HarpMessage.FromByte(Address, messageType, value);
+            return HarpMessage.FromByte(Address, messageType, (byte)value);
         }
 
         /// <summary>
-        /// Returns a timestamped Harp message for the <see cref="DigitalInput"/>
+        /// Returns a timestamped Harp message for the <see cref="InputState"/>
         /// register.
         /// </summary>
         /// <param name="timestamp">The timestamp of the message payload, in seconds.</param>
         /// <param name="messageType">The type of the Harp message.</param>
         /// <param name="value">The value to be stored in the message payload.</param>
         /// <returns>
-        /// A <see cref="HarpMessage"/> object for the <see cref="DigitalInput"/> register
+        /// A <see cref="HarpMessage"/> object for the <see cref="InputState"/> register
         /// with the specified message type, timestamp, and payload.
         /// </returns>
-        public static HarpMessage FromPayload(double timestamp, MessageType messageType, byte value)
+        public static HarpMessage FromPayload(double timestamp, MessageType messageType, DigitalInputs value)
         {
-            return HarpMessage.FromByte(Address, timestamp, messageType, value);
+            return HarpMessage.FromByte(Address, timestamp, messageType, (byte)value);
         }
     }
 
     /// <summary>
     /// Provides methods for manipulating timestamped messages from the
-    /// DigitalInput register.
+    /// InputState register.
     /// </summary>
-    /// <seealso cref="DigitalInput"/>
-    [Description("Filters and selects timestamped messages from the DigitalInput register.")]
-    public partial class TimestampedDigitalInput
+    /// <seealso cref="InputState"/>
+    [Description("Filters and selects timestamped messages from the InputState register.")]
+    public partial class TimestampedInputState
     {
         /// <summary>
-        /// Represents the address of the <see cref="DigitalInput"/> register. This field is constant.
+        /// Represents the address of the <see cref="InputState"/> register. This field is constant.
         /// </summary>
-        public const int Address = DigitalInput.Address;
+        public const int Address = InputState.Address;
 
         /// <summary>
-        /// Returns timestamped payload data for <see cref="DigitalInput"/> register messages.
+        /// Returns timestamped payload data for <see cref="InputState"/> register messages.
         /// </summary>
         /// <param name="message">A <see cref="HarpMessage"/> object representing the register message.</param>
         /// <returns>A value representing the timestamped message payload.</returns>
-        public static Timestamped<byte> GetPayload(HarpMessage message)
+        public static Timestamped<DigitalInputs> GetPayload(HarpMessage message)
         {
-            return DigitalInput.GetTimestampedPayload(message);
+            return InputState.GetTimestampedPayload(message);
         }
     }
 
@@ -2746,7 +2765,7 @@ namespace Harp.CameraController
     /// <seealso cref="CreateOutputClearPayload"/>
     /// <seealso cref="CreateOutputTogglePayload"/>
     /// <seealso cref="CreateOutputStatePayload"/>
-    /// <seealso cref="CreateDigitalInputPayload"/>
+    /// <seealso cref="CreateInputStatePayload"/>
     [XmlInclude(typeof(CreateCam0EventPayload))]
     [XmlInclude(typeof(CreateCam1EventPayload))]
     [XmlInclude(typeof(CreateConfigureCam0EventPayload))]
@@ -2771,7 +2790,7 @@ namespace Harp.CameraController
     [XmlInclude(typeof(CreateOutputClearPayload))]
     [XmlInclude(typeof(CreateOutputTogglePayload))]
     [XmlInclude(typeof(CreateOutputStatePayload))]
-    [XmlInclude(typeof(CreateDigitalInputPayload))]
+    [XmlInclude(typeof(CreateInputStatePayload))]
     [Description("Creates standard message payloads for the CameraController device.")]
     public partial class CreateMessage : CreateMessageBuilder, INamedElement
     {
@@ -2799,7 +2818,7 @@ namespace Harp.CameraController
         /// Gets or sets the value that signals a frame was triggered on camera 0.
         /// </summary>
         [Description("The value that signals a frame was triggered on camera 0.")]
-        public byte Value { get; set; }
+        public CameraEvents Value { get; set; }
 
         /// <summary>
         /// Creates an observable sequence that contains a single message
@@ -2847,7 +2866,7 @@ namespace Harp.CameraController
         /// Gets or sets the value that signals a frame was triggered on camera 1.
         /// </summary>
         [Description("The value that signals a frame was triggered on camera 1.")]
-        public byte Value { get; set; }
+        public CameraEvents Value { get; set; }
 
         /// <summary>
         /// Creates an observable sequence that contains a single message
@@ -2895,7 +2914,7 @@ namespace Harp.CameraController
         /// Gets or sets the value that configures the event on camera 0.
         /// </summary>
         [Description("The value that configures the event on camera 0.")]
-        public byte Value { get; set; }
+        public EventConfiguration Value { get; set; }
 
         /// <summary>
         /// Creates an observable sequence that contains a single message
@@ -2943,7 +2962,7 @@ namespace Harp.CameraController
         /// Gets or sets the value that configures the event on camera 0.
         /// </summary>
         [Description("The value that configures the event on camera 0.")]
-        public byte Value { get; set; }
+        public EventConfiguration Value { get; set; }
 
         /// <summary>
         /// Creates an observable sequence that contains a single message
@@ -2991,7 +3010,7 @@ namespace Harp.CameraController
         /// Gets or sets the value that starts and stops the cameras immediately.
         /// </summary>
         [Description("The value that starts and stops the cameras immediately.")]
-        public byte Value { get; set; }
+        public CameraFlags Value { get; set; }
 
         /// <summary>
         /// Creates an observable sequence that contains a single message
@@ -3039,7 +3058,7 @@ namespace Harp.CameraController
         /// Gets or sets the value that starts and stops the cameras on a timestamp.
         /// </summary>
         [Description("The value that starts and stops the cameras on a timestamp.")]
-        public byte Value { get; set; }
+        public CameraFlags Value { get; set; }
 
         /// <summary>
         /// Creates an observable sequence that contains a single message
@@ -3183,7 +3202,7 @@ namespace Harp.CameraController
         /// Gets or sets the value that configures the trigger source for camera 0.
         /// </summary>
         [Description("The value that configures the trigger source for camera 0.")]
-        public byte Value { get; set; }
+        public TriggerSource Value { get; set; }
 
         /// <summary>
         /// Creates an observable sequence that contains a single message
@@ -3231,7 +3250,7 @@ namespace Harp.CameraController
         /// Gets or sets the value that configures whether trigger is inverted for camera 0.
         /// </summary>
         [Description("The value that configures whether trigger is inverted for camera 0.")]
-        public byte Value { get; set; }
+        public TriggerInverted Value { get; set; }
 
         /// <summary>
         /// Creates an observable sequence that contains a single message
@@ -3279,7 +3298,7 @@ namespace Harp.CameraController
         /// Gets or sets the value that select the strobe source line for camera 0. The direct line or with pull-up.
         /// </summary>
         [Description("The value that select the strobe source line for camera 0. The direct line or with pull-up.")]
-        public byte Value { get; set; }
+        public StrobeSource Value { get; set; }
 
         /// <summary>
         /// Creates an observable sequence that contains a single message
@@ -3423,7 +3442,7 @@ namespace Harp.CameraController
         /// Gets or sets the value that configures the trigger source for camera 1.
         /// </summary>
         [Description("The value that configures the trigger source for camera 1.")]
-        public byte Value { get; set; }
+        public TriggerSource Value { get; set; }
 
         /// <summary>
         /// Creates an observable sequence that contains a single message
@@ -3471,7 +3490,7 @@ namespace Harp.CameraController
         /// Gets or sets the value that configures whether trigger is inverted for camera 1.
         /// </summary>
         [Description("The value that configures whether trigger is inverted for camera 1.")]
-        public byte Value { get; set; }
+        public TriggerInverted Value { get; set; }
 
         /// <summary>
         /// Creates an observable sequence that contains a single message
@@ -3519,7 +3538,7 @@ namespace Harp.CameraController
         /// Gets or sets the value that select the strobe source line for camera 1. The direct line or with pull-up.
         /// </summary>
         [Description("The value that select the strobe source line for camera 1. The direct line or with pull-up.")]
-        public byte Value { get; set; }
+        public StrobeSource Value { get; set; }
 
         /// <summary>
         /// Creates an observable sequence that contains a single message
@@ -3663,7 +3682,7 @@ namespace Harp.CameraController
         /// Gets or sets the value that configures the digital Output 0.
         /// </summary>
         [Description("The value that configures the digital Output 0.")]
-        public byte Value { get; set; }
+        public OutputConfiguration Value { get; set; }
 
         /// <summary>
         /// Creates an observable sequence that contains a single message
@@ -3711,7 +3730,7 @@ namespace Harp.CameraController
         /// Gets or sets the value that configures the digital Output 1.
         /// </summary>
         [Description("The value that configures the digital Output 1.")]
-        public byte Value { get; set; }
+        public OutputConfiguration Value { get; set; }
 
         /// <summary>
         /// Creates an observable sequence that contains a single message
@@ -3759,7 +3778,7 @@ namespace Harp.CameraController
         /// Gets or sets the value that set the specified digital output lines.
         /// </summary>
         [Description("The value that set the specified digital output lines.")]
-        public byte Value { get; set; }
+        public DigitalOutputs Value { get; set; }
 
         /// <summary>
         /// Creates an observable sequence that contains a single message
@@ -3807,7 +3826,7 @@ namespace Harp.CameraController
         /// Gets or sets the value that clear the specified digital output lines.
         /// </summary>
         [Description("The value that clear the specified digital output lines.")]
-        public byte Value { get; set; }
+        public DigitalOutputs Value { get; set; }
 
         /// <summary>
         /// Creates an observable sequence that contains a single message
@@ -3855,7 +3874,7 @@ namespace Harp.CameraController
         /// Gets or sets the value that toggle the specified digital output lines.
         /// </summary>
         [Description("The value that toggle the specified digital output lines.")]
-        public byte Value { get; set; }
+        public DigitalOutputs Value { get; set; }
 
         /// <summary>
         /// Creates an observable sequence that contains a single message
@@ -3903,7 +3922,7 @@ namespace Harp.CameraController
         /// Gets or sets the value that write the state of all digital output lines.
         /// </summary>
         [Description("The value that write the state of all digital output lines.")]
-        public byte Value { get; set; }
+        public DigitalOutputs Value { get; set; }
 
         /// <summary>
         /// Creates an observable sequence that contains a single message
@@ -3942,16 +3961,16 @@ namespace Harp.CameraController
     /// Represents an operator that creates a sequence of message payloads
     /// that specifies the state of the digital Input 0.
     /// </summary>
-    [DisplayName("DigitalInputPayload")]
+    [DisplayName("InputStatePayload")]
     [WorkflowElementCategory(ElementCategory.Transform)]
     [Description("Creates a sequence of message payloads that specifies the state of the digital Input 0.")]
-    public partial class CreateDigitalInputPayload : HarpCombinator
+    public partial class CreateInputStatePayload : HarpCombinator
     {
         /// <summary>
         /// Gets or sets the value that specifies the state of the digital Input 0.
         /// </summary>
         [Description("The value that specifies the state of the digital Input 0.")]
-        public byte Value { get; set; }
+        public DigitalInputs Value { get; set; }
 
         /// <summary>
         /// Creates an observable sequence that contains a single message
@@ -3982,7 +4001,205 @@ namespace Harp.CameraController
         /// </returns>
         public IObservable<HarpMessage> Process<TSource>(IObservable<TSource> source)
         {
-            return source.Select(_ => DigitalInput.FromPayload(MessageType, Value));
+            return source.Select(_ => InputState.FromPayload(MessageType, Value));
         }
+    }
+
+    /// <summary>
+    /// Specifies active camera event flags.
+    /// </summary>
+    [Flags]
+    public enum CameraEvents : byte
+    {
+        Trigger = 0x1,
+        Strobe = 0x2
+    }
+
+    /// <summary>
+    /// Specifies operation flags for camera control.
+    /// </summary>
+    [Flags]
+    public enum CameraFlags : byte
+    {
+        StartCam0 = 0x1,
+        StartCam1 = 0x2,
+        StopCam0 = 0x4,
+        StopCam1 = 0x8,
+        SingleFrameCam0 = 0x10,
+        SingleFrameCam1 = 0x20
+    }
+
+    /// <summary>
+    /// Specifies the state of the digital input lines.
+    /// </summary>
+    [Flags]
+    public enum DigitalInputs : byte
+    {
+        DI0 = 0x1
+    }
+
+    /// <summary>
+    /// Specifies the state of the digital output lines.
+    /// </summary>
+    [Flags]
+    public enum DigitalOutputs : byte
+    {
+        DO0 = 0x1,
+        DO1 = 0x2
+    }
+
+    /// <summary>
+    /// Specifies the operation of the camera events.
+    /// </summary>
+    public enum EventConfiguration : byte
+    {
+        /// <summary>
+        /// Event is sent when the strobe goes from LOW to HIGH.
+        /// </summary>
+        EventOnStrobe = 0,
+
+        /// <summary>
+        /// Event is sent when the trigger goes from LOW to HIGH.
+        /// </summary>
+        EventOnTrigger = 1
+    }
+
+    /// <summary>
+    /// Specifies the source for generating the trigger signal.
+    /// </summary>
+    public enum TriggerSource : byte
+    {
+        /// <summary>
+        /// Trigger is controlled by the device TriggerXCamX registers.
+        /// </summary>
+        Internal = 0,
+
+        /// <summary>
+        /// Reserved, do not use.
+        /// </summary>
+        InternalReserved0 = 1,
+
+        /// <summary>
+        /// Trigger is synchronously generated at 1Hz.
+        /// </summary>
+        Internal1Hz = 2,
+
+        /// <summary>
+        /// Trigger is synchronously generated at 2Hz.
+        /// </summary>
+        Internal2Hz = 3,
+
+        /// <summary>
+        /// Trigger is synchronously generated at 5Hz.
+        /// </summary>
+        Internal5Hz = 4,
+
+        /// <summary>
+        /// Trigger is synchronously generated at 100Hz.
+        /// </summary>
+        Internal10Hz = 5,
+
+        /// <summary>
+        /// Reserved, do not use.
+        /// </summary>
+        InternalReserved1 = 6,
+
+        /// <summary>
+        /// Trigger is synchronously generated at 20Hz.
+        /// </summary>
+        Internal20Hz = 7,
+
+        /// <summary>
+        /// Reserved, do not use.
+        /// </summary>
+        InternalReserved2 = 8,
+
+        /// <summary>
+        /// Trigger is synchronously generated at 40Hz.
+        /// </summary>
+        Internal40Hz = 9,
+
+        /// <summary>
+        /// Trigger is synchronously generated at 50Hz.
+        /// </summary>
+        Internal50Hz = 10,
+
+        /// <summary>
+        /// Reserved, do not use.
+        /// </summary>
+        InternalReserved3 = 11,
+
+        /// <summary>
+        /// Reserved, do not use.
+        /// </summary>
+        InternalReserved4 = 12,
+
+        /// <summary>
+        /// Trigger is synchronously generated at 100Hz.
+        /// </summary>
+        Internal100Hz = 13,
+
+        /// <summary>
+        /// Trigger is synchronously generated at 125Hz.
+        /// </summary>
+        Internal125Hz = 14,
+
+        /// <summary>
+        /// Trigger is controlled by the external input 0.
+        /// </summary>
+        Input0 = 15
+    }
+
+    /// <summary>
+    /// Specifies whether the camera trigger signal is inverted.
+    /// </summary>
+    public enum TriggerInverted : byte
+    {
+        /// <summary>
+        /// Selects the direct line.
+        /// </summary>
+        No = 0,
+
+        /// <summary>
+        /// Selects the pull-up line.
+        /// </summary>
+        Yes = 1
+    }
+
+    /// <summary>
+    /// Specifies the source for reading the strobe signal.
+    /// </summary>
+    public enum StrobeSource : byte
+    {
+        /// <summary>
+        /// Selects the direct line.
+        /// </summary>
+        Direct = 0,
+
+        /// <summary>
+        /// Selects the pull-up line.
+        /// </summary>
+        PullUp = 1
+    }
+
+    /// <summary>
+    /// Specifies the operation of the digital output line.
+    /// </summary>
+    public enum OutputConfiguration : byte
+    {
+        /// <summary>
+        /// The digital output is controlled exclusively by software commands.
+        /// </summary>
+        Software = 0,
+
+        /// <summary>
+        /// The digital output follows the corresponding camera trigger (not inverted).
+        /// </summary>
+        TriggerCamera = 1,
+
+        /// <summary>
+        /// The digital output follows the corresponding camera strobe.
+        /// </summary>
+        StrobeCamera = 2
     }
 }

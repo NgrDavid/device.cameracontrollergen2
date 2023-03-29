@@ -51,7 +51,7 @@ namespace Harp.CameraController
         /// A task that represents the asynchronous read operation. The <see cref="Task{TResult}.Result"/>
         /// property contains the register payload.
         /// </returns>
-        public async Task<byte> ReadCam0EventAsync()
+        public async Task<CameraEvents> ReadCam0EventAsync()
         {
             var reply = await CommandAsync(HarpCommand.ReadByte(Cam0Event.Address));
             return Cam0Event.GetPayload(reply);
@@ -64,7 +64,7 @@ namespace Harp.CameraController
         /// A task that represents the asynchronous read operation. The <see cref="Task{TResult}.Result"/>
         /// property contains the timestamped register payload.
         /// </returns>
-        public async Task<Timestamped<byte>> ReadTimestampedCam0EventAsync()
+        public async Task<Timestamped<CameraEvents>> ReadTimestampedCam0EventAsync()
         {
             var reply = await CommandAsync(HarpCommand.ReadByte(Cam0Event.Address));
             return Cam0Event.GetTimestampedPayload(reply);
@@ -77,7 +77,7 @@ namespace Harp.CameraController
         /// A task that represents the asynchronous read operation. The <see cref="Task{TResult}.Result"/>
         /// property contains the register payload.
         /// </returns>
-        public async Task<byte> ReadCam1EventAsync()
+        public async Task<CameraEvents> ReadCam1EventAsync()
         {
             var reply = await CommandAsync(HarpCommand.ReadByte(Cam1Event.Address));
             return Cam1Event.GetPayload(reply);
@@ -90,7 +90,7 @@ namespace Harp.CameraController
         /// A task that represents the asynchronous read operation. The <see cref="Task{TResult}.Result"/>
         /// property contains the timestamped register payload.
         /// </returns>
-        public async Task<Timestamped<byte>> ReadTimestampedCam1EventAsync()
+        public async Task<Timestamped<CameraEvents>> ReadTimestampedCam1EventAsync()
         {
             var reply = await CommandAsync(HarpCommand.ReadByte(Cam1Event.Address));
             return Cam1Event.GetTimestampedPayload(reply);
@@ -103,7 +103,7 @@ namespace Harp.CameraController
         /// A task that represents the asynchronous read operation. The <see cref="Task{TResult}.Result"/>
         /// property contains the register payload.
         /// </returns>
-        public async Task<byte> ReadConfigureCam0EventAsync()
+        public async Task<EventConfiguration> ReadConfigureCam0EventAsync()
         {
             var reply = await CommandAsync(HarpCommand.ReadByte(ConfigureCam0Event.Address));
             return ConfigureCam0Event.GetPayload(reply);
@@ -116,7 +116,7 @@ namespace Harp.CameraController
         /// A task that represents the asynchronous read operation. The <see cref="Task{TResult}.Result"/>
         /// property contains the timestamped register payload.
         /// </returns>
-        public async Task<Timestamped<byte>> ReadTimestampedConfigureCam0EventAsync()
+        public async Task<Timestamped<EventConfiguration>> ReadTimestampedConfigureCam0EventAsync()
         {
             var reply = await CommandAsync(HarpCommand.ReadByte(ConfigureCam0Event.Address));
             return ConfigureCam0Event.GetTimestampedPayload(reply);
@@ -127,7 +127,7 @@ namespace Harp.CameraController
         /// </summary>
         /// <param name="value">The value to be stored in the register.</param>
         /// <returns>The task object representing the asynchronous write operation.</returns>
-        public async Task WriteConfigureCam0EventAsync(byte value)
+        public async Task WriteConfigureCam0EventAsync(EventConfiguration value)
         {
             var request = ConfigureCam0Event.FromPayload(MessageType.Write, value);
             await CommandAsync(request);
@@ -140,7 +140,7 @@ namespace Harp.CameraController
         /// A task that represents the asynchronous read operation. The <see cref="Task{TResult}.Result"/>
         /// property contains the register payload.
         /// </returns>
-        public async Task<byte> ReadConfigureCam1EventAsync()
+        public async Task<EventConfiguration> ReadConfigureCam1EventAsync()
         {
             var reply = await CommandAsync(HarpCommand.ReadByte(ConfigureCam1Event.Address));
             return ConfigureCam1Event.GetPayload(reply);
@@ -153,7 +153,7 @@ namespace Harp.CameraController
         /// A task that represents the asynchronous read operation. The <see cref="Task{TResult}.Result"/>
         /// property contains the timestamped register payload.
         /// </returns>
-        public async Task<Timestamped<byte>> ReadTimestampedConfigureCam1EventAsync()
+        public async Task<Timestamped<EventConfiguration>> ReadTimestampedConfigureCam1EventAsync()
         {
             var reply = await CommandAsync(HarpCommand.ReadByte(ConfigureCam1Event.Address));
             return ConfigureCam1Event.GetTimestampedPayload(reply);
@@ -164,7 +164,7 @@ namespace Harp.CameraController
         /// </summary>
         /// <param name="value">The value to be stored in the register.</param>
         /// <returns>The task object representing the asynchronous write operation.</returns>
-        public async Task WriteConfigureCam1EventAsync(byte value)
+        public async Task WriteConfigureCam1EventAsync(EventConfiguration value)
         {
             var request = ConfigureCam1Event.FromPayload(MessageType.Write, value);
             await CommandAsync(request);
@@ -177,7 +177,7 @@ namespace Harp.CameraController
         /// A task that represents the asynchronous read operation. The <see cref="Task{TResult}.Result"/>
         /// property contains the register payload.
         /// </returns>
-        public async Task<byte> ReadStartAndStopAsync()
+        public async Task<CameraFlags> ReadStartAndStopAsync()
         {
             var reply = await CommandAsync(HarpCommand.ReadByte(StartAndStop.Address));
             return StartAndStop.GetPayload(reply);
@@ -190,7 +190,7 @@ namespace Harp.CameraController
         /// A task that represents the asynchronous read operation. The <see cref="Task{TResult}.Result"/>
         /// property contains the timestamped register payload.
         /// </returns>
-        public async Task<Timestamped<byte>> ReadTimestampedStartAndStopAsync()
+        public async Task<Timestamped<CameraFlags>> ReadTimestampedStartAndStopAsync()
         {
             var reply = await CommandAsync(HarpCommand.ReadByte(StartAndStop.Address));
             return StartAndStop.GetTimestampedPayload(reply);
@@ -201,7 +201,7 @@ namespace Harp.CameraController
         /// </summary>
         /// <param name="value">The value to be stored in the register.</param>
         /// <returns>The task object representing the asynchronous write operation.</returns>
-        public async Task WriteStartAndStopAsync(byte value)
+        public async Task WriteStartAndStopAsync(CameraFlags value)
         {
             var request = StartAndStop.FromPayload(MessageType.Write, value);
             await CommandAsync(request);
@@ -214,7 +214,7 @@ namespace Harp.CameraController
         /// A task that represents the asynchronous read operation. The <see cref="Task{TResult}.Result"/>
         /// property contains the register payload.
         /// </returns>
-        public async Task<byte> ReadStartAndStopTimestampedAsync()
+        public async Task<CameraFlags> ReadStartAndStopTimestampedAsync()
         {
             var reply = await CommandAsync(HarpCommand.ReadByte(StartAndStopTimestamped.Address));
             return StartAndStopTimestamped.GetPayload(reply);
@@ -227,7 +227,7 @@ namespace Harp.CameraController
         /// A task that represents the asynchronous read operation. The <see cref="Task{TResult}.Result"/>
         /// property contains the timestamped register payload.
         /// </returns>
-        public async Task<Timestamped<byte>> ReadTimestampedStartAndStopTimestampedAsync()
+        public async Task<Timestamped<CameraFlags>> ReadTimestampedStartAndStopTimestampedAsync()
         {
             var reply = await CommandAsync(HarpCommand.ReadByte(StartAndStopTimestamped.Address));
             return StartAndStopTimestamped.GetTimestampedPayload(reply);
@@ -238,7 +238,7 @@ namespace Harp.CameraController
         /// </summary>
         /// <param name="value">The value to be stored in the register.</param>
         /// <returns>The task object representing the asynchronous write operation.</returns>
-        public async Task WriteStartAndStopTimestampedAsync(byte value)
+        public async Task WriteStartAndStopTimestampedAsync(CameraFlags value)
         {
             var request = StartAndStopTimestamped.FromPayload(MessageType.Write, value);
             await CommandAsync(request);
@@ -325,7 +325,7 @@ namespace Harp.CameraController
         /// A task that represents the asynchronous read operation. The <see cref="Task{TResult}.Result"/>
         /// property contains the register payload.
         /// </returns>
-        public async Task<byte> ReadTriggerConfigCam0Async()
+        public async Task<TriggerSource> ReadTriggerConfigCam0Async()
         {
             var reply = await CommandAsync(HarpCommand.ReadByte(TriggerConfigCam0.Address));
             return TriggerConfigCam0.GetPayload(reply);
@@ -338,7 +338,7 @@ namespace Harp.CameraController
         /// A task that represents the asynchronous read operation. The <see cref="Task{TResult}.Result"/>
         /// property contains the timestamped register payload.
         /// </returns>
-        public async Task<Timestamped<byte>> ReadTimestampedTriggerConfigCam0Async()
+        public async Task<Timestamped<TriggerSource>> ReadTimestampedTriggerConfigCam0Async()
         {
             var reply = await CommandAsync(HarpCommand.ReadByte(TriggerConfigCam0.Address));
             return TriggerConfigCam0.GetTimestampedPayload(reply);
@@ -349,7 +349,7 @@ namespace Harp.CameraController
         /// </summary>
         /// <param name="value">The value to be stored in the register.</param>
         /// <returns>The task object representing the asynchronous write operation.</returns>
-        public async Task WriteTriggerConfigCam0Async(byte value)
+        public async Task WriteTriggerConfigCam0Async(TriggerSource value)
         {
             var request = TriggerConfigCam0.FromPayload(MessageType.Write, value);
             await CommandAsync(request);
@@ -362,7 +362,7 @@ namespace Harp.CameraController
         /// A task that represents the asynchronous read operation. The <see cref="Task{TResult}.Result"/>
         /// property contains the register payload.
         /// </returns>
-        public async Task<byte> ReadTriggerInvertedCam0Async()
+        public async Task<TriggerInverted> ReadTriggerInvertedCam0Async()
         {
             var reply = await CommandAsync(HarpCommand.ReadByte(TriggerInvertedCam0.Address));
             return TriggerInvertedCam0.GetPayload(reply);
@@ -375,7 +375,7 @@ namespace Harp.CameraController
         /// A task that represents the asynchronous read operation. The <see cref="Task{TResult}.Result"/>
         /// property contains the timestamped register payload.
         /// </returns>
-        public async Task<Timestamped<byte>> ReadTimestampedTriggerInvertedCam0Async()
+        public async Task<Timestamped<TriggerInverted>> ReadTimestampedTriggerInvertedCam0Async()
         {
             var reply = await CommandAsync(HarpCommand.ReadByte(TriggerInvertedCam0.Address));
             return TriggerInvertedCam0.GetTimestampedPayload(reply);
@@ -386,7 +386,7 @@ namespace Harp.CameraController
         /// </summary>
         /// <param name="value">The value to be stored in the register.</param>
         /// <returns>The task object representing the asynchronous write operation.</returns>
-        public async Task WriteTriggerInvertedCam0Async(byte value)
+        public async Task WriteTriggerInvertedCam0Async(TriggerInverted value)
         {
             var request = TriggerInvertedCam0.FromPayload(MessageType.Write, value);
             await CommandAsync(request);
@@ -399,7 +399,7 @@ namespace Harp.CameraController
         /// A task that represents the asynchronous read operation. The <see cref="Task{TResult}.Result"/>
         /// property contains the register payload.
         /// </returns>
-        public async Task<byte> ReadStrobeSourceCam0Async()
+        public async Task<StrobeSource> ReadStrobeSourceCam0Async()
         {
             var reply = await CommandAsync(HarpCommand.ReadByte(StrobeSourceCam0.Address));
             return StrobeSourceCam0.GetPayload(reply);
@@ -412,7 +412,7 @@ namespace Harp.CameraController
         /// A task that represents the asynchronous read operation. The <see cref="Task{TResult}.Result"/>
         /// property contains the timestamped register payload.
         /// </returns>
-        public async Task<Timestamped<byte>> ReadTimestampedStrobeSourceCam0Async()
+        public async Task<Timestamped<StrobeSource>> ReadTimestampedStrobeSourceCam0Async()
         {
             var reply = await CommandAsync(HarpCommand.ReadByte(StrobeSourceCam0.Address));
             return StrobeSourceCam0.GetTimestampedPayload(reply);
@@ -423,7 +423,7 @@ namespace Harp.CameraController
         /// </summary>
         /// <param name="value">The value to be stored in the register.</param>
         /// <returns>The task object representing the asynchronous write operation.</returns>
-        public async Task WriteStrobeSourceCam0Async(byte value)
+        public async Task WriteStrobeSourceCam0Async(StrobeSource value)
         {
             var request = StrobeSourceCam0.FromPayload(MessageType.Write, value);
             await CommandAsync(request);
@@ -510,7 +510,7 @@ namespace Harp.CameraController
         /// A task that represents the asynchronous read operation. The <see cref="Task{TResult}.Result"/>
         /// property contains the register payload.
         /// </returns>
-        public async Task<byte> ReadTriggerConfigCam1Async()
+        public async Task<TriggerSource> ReadTriggerConfigCam1Async()
         {
             var reply = await CommandAsync(HarpCommand.ReadByte(TriggerConfigCam1.Address));
             return TriggerConfigCam1.GetPayload(reply);
@@ -523,7 +523,7 @@ namespace Harp.CameraController
         /// A task that represents the asynchronous read operation. The <see cref="Task{TResult}.Result"/>
         /// property contains the timestamped register payload.
         /// </returns>
-        public async Task<Timestamped<byte>> ReadTimestampedTriggerConfigCam1Async()
+        public async Task<Timestamped<TriggerSource>> ReadTimestampedTriggerConfigCam1Async()
         {
             var reply = await CommandAsync(HarpCommand.ReadByte(TriggerConfigCam1.Address));
             return TriggerConfigCam1.GetTimestampedPayload(reply);
@@ -534,7 +534,7 @@ namespace Harp.CameraController
         /// </summary>
         /// <param name="value">The value to be stored in the register.</param>
         /// <returns>The task object representing the asynchronous write operation.</returns>
-        public async Task WriteTriggerConfigCam1Async(byte value)
+        public async Task WriteTriggerConfigCam1Async(TriggerSource value)
         {
             var request = TriggerConfigCam1.FromPayload(MessageType.Write, value);
             await CommandAsync(request);
@@ -547,7 +547,7 @@ namespace Harp.CameraController
         /// A task that represents the asynchronous read operation. The <see cref="Task{TResult}.Result"/>
         /// property contains the register payload.
         /// </returns>
-        public async Task<byte> ReadTriggerInvertedCam1Async()
+        public async Task<TriggerInverted> ReadTriggerInvertedCam1Async()
         {
             var reply = await CommandAsync(HarpCommand.ReadByte(TriggerInvertedCam1.Address));
             return TriggerInvertedCam1.GetPayload(reply);
@@ -560,7 +560,7 @@ namespace Harp.CameraController
         /// A task that represents the asynchronous read operation. The <see cref="Task{TResult}.Result"/>
         /// property contains the timestamped register payload.
         /// </returns>
-        public async Task<Timestamped<byte>> ReadTimestampedTriggerInvertedCam1Async()
+        public async Task<Timestamped<TriggerInverted>> ReadTimestampedTriggerInvertedCam1Async()
         {
             var reply = await CommandAsync(HarpCommand.ReadByte(TriggerInvertedCam1.Address));
             return TriggerInvertedCam1.GetTimestampedPayload(reply);
@@ -571,7 +571,7 @@ namespace Harp.CameraController
         /// </summary>
         /// <param name="value">The value to be stored in the register.</param>
         /// <returns>The task object representing the asynchronous write operation.</returns>
-        public async Task WriteTriggerInvertedCam1Async(byte value)
+        public async Task WriteTriggerInvertedCam1Async(TriggerInverted value)
         {
             var request = TriggerInvertedCam1.FromPayload(MessageType.Write, value);
             await CommandAsync(request);
@@ -584,7 +584,7 @@ namespace Harp.CameraController
         /// A task that represents the asynchronous read operation. The <see cref="Task{TResult}.Result"/>
         /// property contains the register payload.
         /// </returns>
-        public async Task<byte> ReadStrobeSourceCam1Async()
+        public async Task<StrobeSource> ReadStrobeSourceCam1Async()
         {
             var reply = await CommandAsync(HarpCommand.ReadByte(StrobeSourceCam1.Address));
             return StrobeSourceCam1.GetPayload(reply);
@@ -597,7 +597,7 @@ namespace Harp.CameraController
         /// A task that represents the asynchronous read operation. The <see cref="Task{TResult}.Result"/>
         /// property contains the timestamped register payload.
         /// </returns>
-        public async Task<Timestamped<byte>> ReadTimestampedStrobeSourceCam1Async()
+        public async Task<Timestamped<StrobeSource>> ReadTimestampedStrobeSourceCam1Async()
         {
             var reply = await CommandAsync(HarpCommand.ReadByte(StrobeSourceCam1.Address));
             return StrobeSourceCam1.GetTimestampedPayload(reply);
@@ -608,7 +608,7 @@ namespace Harp.CameraController
         /// </summary>
         /// <param name="value">The value to be stored in the register.</param>
         /// <returns>The task object representing the asynchronous write operation.</returns>
-        public async Task WriteStrobeSourceCam1Async(byte value)
+        public async Task WriteStrobeSourceCam1Async(StrobeSource value)
         {
             var request = StrobeSourceCam1.FromPayload(MessageType.Write, value);
             await CommandAsync(request);
@@ -695,7 +695,7 @@ namespace Harp.CameraController
         /// A task that represents the asynchronous read operation. The <see cref="Task{TResult}.Result"/>
         /// property contains the register payload.
         /// </returns>
-        public async Task<byte> ReadConfigureOutput0Async()
+        public async Task<OutputConfiguration> ReadConfigureOutput0Async()
         {
             var reply = await CommandAsync(HarpCommand.ReadByte(ConfigureOutput0.Address));
             return ConfigureOutput0.GetPayload(reply);
@@ -708,7 +708,7 @@ namespace Harp.CameraController
         /// A task that represents the asynchronous read operation. The <see cref="Task{TResult}.Result"/>
         /// property contains the timestamped register payload.
         /// </returns>
-        public async Task<Timestamped<byte>> ReadTimestampedConfigureOutput0Async()
+        public async Task<Timestamped<OutputConfiguration>> ReadTimestampedConfigureOutput0Async()
         {
             var reply = await CommandAsync(HarpCommand.ReadByte(ConfigureOutput0.Address));
             return ConfigureOutput0.GetTimestampedPayload(reply);
@@ -719,7 +719,7 @@ namespace Harp.CameraController
         /// </summary>
         /// <param name="value">The value to be stored in the register.</param>
         /// <returns>The task object representing the asynchronous write operation.</returns>
-        public async Task WriteConfigureOutput0Async(byte value)
+        public async Task WriteConfigureOutput0Async(OutputConfiguration value)
         {
             var request = ConfigureOutput0.FromPayload(MessageType.Write, value);
             await CommandAsync(request);
@@ -732,7 +732,7 @@ namespace Harp.CameraController
         /// A task that represents the asynchronous read operation. The <see cref="Task{TResult}.Result"/>
         /// property contains the register payload.
         /// </returns>
-        public async Task<byte> ReadConfigureOutput1Async()
+        public async Task<OutputConfiguration> ReadConfigureOutput1Async()
         {
             var reply = await CommandAsync(HarpCommand.ReadByte(ConfigureOutput1.Address));
             return ConfigureOutput1.GetPayload(reply);
@@ -745,7 +745,7 @@ namespace Harp.CameraController
         /// A task that represents the asynchronous read operation. The <see cref="Task{TResult}.Result"/>
         /// property contains the timestamped register payload.
         /// </returns>
-        public async Task<Timestamped<byte>> ReadTimestampedConfigureOutput1Async()
+        public async Task<Timestamped<OutputConfiguration>> ReadTimestampedConfigureOutput1Async()
         {
             var reply = await CommandAsync(HarpCommand.ReadByte(ConfigureOutput1.Address));
             return ConfigureOutput1.GetTimestampedPayload(reply);
@@ -756,7 +756,7 @@ namespace Harp.CameraController
         /// </summary>
         /// <param name="value">The value to be stored in the register.</param>
         /// <returns>The task object representing the asynchronous write operation.</returns>
-        public async Task WriteConfigureOutput1Async(byte value)
+        public async Task WriteConfigureOutput1Async(OutputConfiguration value)
         {
             var request = ConfigureOutput1.FromPayload(MessageType.Write, value);
             await CommandAsync(request);
@@ -769,7 +769,7 @@ namespace Harp.CameraController
         /// A task that represents the asynchronous read operation. The <see cref="Task{TResult}.Result"/>
         /// property contains the register payload.
         /// </returns>
-        public async Task<byte> ReadOutputSetAsync()
+        public async Task<DigitalOutputs> ReadOutputSetAsync()
         {
             var reply = await CommandAsync(HarpCommand.ReadByte(OutputSet.Address));
             return OutputSet.GetPayload(reply);
@@ -782,7 +782,7 @@ namespace Harp.CameraController
         /// A task that represents the asynchronous read operation. The <see cref="Task{TResult}.Result"/>
         /// property contains the timestamped register payload.
         /// </returns>
-        public async Task<Timestamped<byte>> ReadTimestampedOutputSetAsync()
+        public async Task<Timestamped<DigitalOutputs>> ReadTimestampedOutputSetAsync()
         {
             var reply = await CommandAsync(HarpCommand.ReadByte(OutputSet.Address));
             return OutputSet.GetTimestampedPayload(reply);
@@ -793,7 +793,7 @@ namespace Harp.CameraController
         /// </summary>
         /// <param name="value">The value to be stored in the register.</param>
         /// <returns>The task object representing the asynchronous write operation.</returns>
-        public async Task WriteOutputSetAsync(byte value)
+        public async Task WriteOutputSetAsync(DigitalOutputs value)
         {
             var request = OutputSet.FromPayload(MessageType.Write, value);
             await CommandAsync(request);
@@ -806,7 +806,7 @@ namespace Harp.CameraController
         /// A task that represents the asynchronous read operation. The <see cref="Task{TResult}.Result"/>
         /// property contains the register payload.
         /// </returns>
-        public async Task<byte> ReadOutputClearAsync()
+        public async Task<DigitalOutputs> ReadOutputClearAsync()
         {
             var reply = await CommandAsync(HarpCommand.ReadByte(OutputClear.Address));
             return OutputClear.GetPayload(reply);
@@ -819,7 +819,7 @@ namespace Harp.CameraController
         /// A task that represents the asynchronous read operation. The <see cref="Task{TResult}.Result"/>
         /// property contains the timestamped register payload.
         /// </returns>
-        public async Task<Timestamped<byte>> ReadTimestampedOutputClearAsync()
+        public async Task<Timestamped<DigitalOutputs>> ReadTimestampedOutputClearAsync()
         {
             var reply = await CommandAsync(HarpCommand.ReadByte(OutputClear.Address));
             return OutputClear.GetTimestampedPayload(reply);
@@ -830,7 +830,7 @@ namespace Harp.CameraController
         /// </summary>
         /// <param name="value">The value to be stored in the register.</param>
         /// <returns>The task object representing the asynchronous write operation.</returns>
-        public async Task WriteOutputClearAsync(byte value)
+        public async Task WriteOutputClearAsync(DigitalOutputs value)
         {
             var request = OutputClear.FromPayload(MessageType.Write, value);
             await CommandAsync(request);
@@ -843,7 +843,7 @@ namespace Harp.CameraController
         /// A task that represents the asynchronous read operation. The <see cref="Task{TResult}.Result"/>
         /// property contains the register payload.
         /// </returns>
-        public async Task<byte> ReadOutputToggleAsync()
+        public async Task<DigitalOutputs> ReadOutputToggleAsync()
         {
             var reply = await CommandAsync(HarpCommand.ReadByte(OutputToggle.Address));
             return OutputToggle.GetPayload(reply);
@@ -856,7 +856,7 @@ namespace Harp.CameraController
         /// A task that represents the asynchronous read operation. The <see cref="Task{TResult}.Result"/>
         /// property contains the timestamped register payload.
         /// </returns>
-        public async Task<Timestamped<byte>> ReadTimestampedOutputToggleAsync()
+        public async Task<Timestamped<DigitalOutputs>> ReadTimestampedOutputToggleAsync()
         {
             var reply = await CommandAsync(HarpCommand.ReadByte(OutputToggle.Address));
             return OutputToggle.GetTimestampedPayload(reply);
@@ -867,7 +867,7 @@ namespace Harp.CameraController
         /// </summary>
         /// <param name="value">The value to be stored in the register.</param>
         /// <returns>The task object representing the asynchronous write operation.</returns>
-        public async Task WriteOutputToggleAsync(byte value)
+        public async Task WriteOutputToggleAsync(DigitalOutputs value)
         {
             var request = OutputToggle.FromPayload(MessageType.Write, value);
             await CommandAsync(request);
@@ -880,7 +880,7 @@ namespace Harp.CameraController
         /// A task that represents the asynchronous read operation. The <see cref="Task{TResult}.Result"/>
         /// property contains the register payload.
         /// </returns>
-        public async Task<byte> ReadOutputStateAsync()
+        public async Task<DigitalOutputs> ReadOutputStateAsync()
         {
             var reply = await CommandAsync(HarpCommand.ReadByte(OutputState.Address));
             return OutputState.GetPayload(reply);
@@ -893,7 +893,7 @@ namespace Harp.CameraController
         /// A task that represents the asynchronous read operation. The <see cref="Task{TResult}.Result"/>
         /// property contains the timestamped register payload.
         /// </returns>
-        public async Task<Timestamped<byte>> ReadTimestampedOutputStateAsync()
+        public async Task<Timestamped<DigitalOutputs>> ReadTimestampedOutputStateAsync()
         {
             var reply = await CommandAsync(HarpCommand.ReadByte(OutputState.Address));
             return OutputState.GetTimestampedPayload(reply);
@@ -904,36 +904,36 @@ namespace Harp.CameraController
         /// </summary>
         /// <param name="value">The value to be stored in the register.</param>
         /// <returns>The task object representing the asynchronous write operation.</returns>
-        public async Task WriteOutputStateAsync(byte value)
+        public async Task WriteOutputStateAsync(DigitalOutputs value)
         {
             var request = OutputState.FromPayload(MessageType.Write, value);
             await CommandAsync(request);
         }
 
         /// <summary>
-        /// Asynchronously reads the contents of the DigitalInput register.
+        /// Asynchronously reads the contents of the InputState register.
         /// </summary>
         /// <returns>
         /// A task that represents the asynchronous read operation. The <see cref="Task{TResult}.Result"/>
         /// property contains the register payload.
         /// </returns>
-        public async Task<byte> ReadDigitalInputAsync()
+        public async Task<DigitalInputs> ReadInputStateAsync()
         {
-            var reply = await CommandAsync(HarpCommand.ReadByte(DigitalInput.Address));
-            return DigitalInput.GetPayload(reply);
+            var reply = await CommandAsync(HarpCommand.ReadByte(InputState.Address));
+            return InputState.GetPayload(reply);
         }
 
         /// <summary>
-        /// Asynchronously reads the timestamped contents of the DigitalInput register.
+        /// Asynchronously reads the timestamped contents of the InputState register.
         /// </summary>
         /// <returns>
         /// A task that represents the asynchronous read operation. The <see cref="Task{TResult}.Result"/>
         /// property contains the timestamped register payload.
         /// </returns>
-        public async Task<Timestamped<byte>> ReadTimestampedDigitalInputAsync()
+        public async Task<Timestamped<DigitalInputs>> ReadTimestampedInputStateAsync()
         {
-            var reply = await CommandAsync(HarpCommand.ReadByte(DigitalInput.Address));
-            return DigitalInput.GetTimestampedPayload(reply);
+            var reply = await CommandAsync(HarpCommand.ReadByte(InputState.Address));
+            return InputState.GetTimestampedPayload(reply);
         }
     }
 }
