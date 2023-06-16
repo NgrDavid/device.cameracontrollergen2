@@ -1,14 +1,14 @@
 using Bonsai.Harp;
 using System.Threading.Tasks;
 
-namespace Harp.CameraController
+namespace Harp.CameraControllerGen2
 {
     /// <inheritdoc/>
     public partial class Device
     {
         /// <summary>
         /// Initializes a new instance of the asynchronous API to configure and interface
-        /// with CameraController devices on the specified serial port.
+        /// with CameraControllerGen2 devices on the specified serial port.
         /// </summary>
         /// <param name="portName">
         /// The name of the serial port used to communicate with the Harp device.
@@ -25,7 +25,7 @@ namespace Harp.CameraController
             if (whoAmI != Device.WhoAmI)
             {
                 var errorMessage = string.Format(
-                    "The device ID {1} on {0} was unexpected. Check whether a CameraController device is connected to the specified serial port.",
+                    "The device ID {1} on {0} was unexpected. Check whether a CameraControllerGen2 device is connected to the specified serial port.",
                     portName, whoAmI);
                 throw new HarpException(errorMessage);
             }
@@ -35,7 +35,7 @@ namespace Harp.CameraController
     }
 
     /// <summary>
-    /// Represents an asynchronous API to configure and interface with CameraController devices.
+    /// Represents an asynchronous API to configure and interface with CameraControllerGen2 devices.
     /// </summary>
     public partial class AsyncDevice : Bonsai.Harp.AsyncDevice
     {

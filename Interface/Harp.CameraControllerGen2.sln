@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.3.32825.248
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{618C6851-EFC7-41FF-B300-1BB52CA6573A}") = "Harp.CameraController", "Harp.CameraController\Harp.CameraController.csproj", "{24575171-CE0D-4157-9143-93B3B27E070D}"
+Project("{BBE10906-3C02-4875-919C-6DB56B5EE0FE}") = "Harp.CameraControllerGen2", "Harp.CameraControllerGen2\Harp.CameraControllerGen2.csproj", "{7B772D94-1DA5-40CC-AE9E-FDACDBA99AEE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,15 +11,15 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{24575171-CE0D-4157-9143-93B3B27E070D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{24575171-CE0D-4157-9143-93B3B27E070D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{24575171-CE0D-4157-9143-93B3B27E070D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{24575171-CE0D-4157-9143-93B3B27E070D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7B772D94-1DA5-40CC-AE9E-FDACDBA99AEE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7B772D94-1DA5-40CC-AE9E-FDACDBA99AEE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7B772D94-1DA5-40CC-AE9E-FDACDBA99AEE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7B772D94-1DA5-40CC-AE9E-FDACDBA99AEE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {44A60087-B101-469C-8EF2-CB9D7768B552}
+		SolutionGuid = {65AC39C5-5B1F-4F7B-8154-B09FB0978C01}
 	EndGlobalSection
 EndGlobal
