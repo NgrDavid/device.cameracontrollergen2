@@ -3,5 +3,5 @@
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: XmlNamespacePrefix("clr-namespace:Harp.CameraController", null)]
+[assembly: XmlNamespacePrefix("clr-namespace:Harp.CameraControllerGen2", null)]
 [assembly: WorkflowNamespaceIcon("Bonsai:ElementIcon.Daq")]

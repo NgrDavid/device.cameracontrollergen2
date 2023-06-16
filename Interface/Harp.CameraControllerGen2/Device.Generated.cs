@@ -7,19 +7,19 @@ using System.Linq;
 using System.Reactive.Linq;
 using System.Xml.Serialization;
 
-namespace Harp.CameraController
+namespace Harp.CameraControllerGen2
 {
     /// <summary>
-    /// Generates events and processes commands for the CameraController device connected
+    /// Generates events and processes commands for the CameraControllerGen2 device connected
     /// at the specified serial port.
     /// </summary>
     [Combinator(MethodName = nameof(Generate))]
     [WorkflowElementCategory(ElementCategory.Source)]
-    [Description("Generates events and processes commands for the CameraController device.")]
+    [Description("Generates events and processes commands for the CameraControllerGen2 device.")]
     public partial class Device : Bonsai.Harp.Device, INamedElement
     {
         /// <summary>
-        /// Represents the unique identity class of the <see cref="CameraController"/> device.
+        /// Represents the unique identity class of the <see cref="CameraControllerGen2"/> device.
         /// This field is constant.
         /// </summary>
         public const int WhoAmI = 1170;
@@ -29,7 +29,7 @@ namespace Harp.CameraController
         /// </summary>
         public Device() : base(WhoAmI) { }
 
-        string INamedElement.Name => nameof(CameraController);
+        string INamedElement.Name => nameof(CameraControllerGen2);
 
         /// <summary>
         /// Gets a read-only mapping from address to register type.
@@ -66,19 +66,19 @@ namespace Harp.CameraController
     }
 
     /// <summary>
-    /// Represents an operator that groups the sequence of <see cref="CameraController"/>" messages by register type.
+    /// Represents an operator that groups the sequence of <see cref="CameraControllerGen2"/>" messages by register type.
     /// </summary>
-    [Description("Groups the sequence of CameraController messages by register type.")]
+    [Description("Groups the sequence of CameraControllerGen2 messages by register type.")]
     public partial class GroupByRegister : Combinator<HarpMessage, IGroupedObservable<Type, HarpMessage>>
     {
         /// <summary>
-        /// Groups an observable sequence of <see cref="CameraController"/> messages
+        /// Groups an observable sequence of <see cref="CameraControllerGen2"/> messages
         /// by register type.
         /// </summary>
         /// <param name="source">The sequence of Harp device messages.</param>
         /// <returns>
         /// A sequence of observable groups, each of which corresponds to a unique
-        /// <see cref="CameraController"/> register.
+        /// <see cref="CameraControllerGen2"/> register.
         /// </returns>
         public override IObservable<IGroupedObservable<Type, HarpMessage>> Process(IObservable<HarpMessage> source)
         {
@@ -88,7 +88,7 @@ namespace Harp.CameraController
 
     /// <summary>
     /// Represents an operator that filters register-specific messages
-    /// reported by the <see cref="CameraController"/> device.
+    /// reported by the <see cref="CameraControllerGen2"/> device.
     /// </summary>
     /// <seealso cref="Cam0Event"/>
     /// <seealso cref="Cam1Event"/>
@@ -140,7 +140,7 @@ namespace Harp.CameraController
     [XmlInclude(typeof(OutputToggle))]
     [XmlInclude(typeof(OutputState))]
     [XmlInclude(typeof(InputState))]
-    [Description("Filters register-specific messages reported by the CameraController device.")]
+    [Description("Filters register-specific messages reported by the CameraControllerGen2 device.")]
     public class FilterMessage : FilterMessageBuilder, INamedElement
     {
         /// <summary>
@@ -153,13 +153,13 @@ namespace Harp.CameraController
 
         string INamedElement.Name
         {
-            get => $"{nameof(CameraController)}.{GetElementDisplayName(Register)}";
+            get => $"{nameof(CameraControllerGen2)}.{GetElementDisplayName(Register)}";
         }
     }
 
     /// <summary>
     /// Represents an operator which filters and selects specific messages
-    /// reported by the CameraController device.
+    /// reported by the CameraControllerGen2 device.
     /// </summary>
     /// <seealso cref="Cam0Event"/>
     /// <seealso cref="Cam1Event"/>
@@ -236,7 +236,7 @@ namespace Harp.CameraController
     [XmlInclude(typeof(TimestampedOutputToggle))]
     [XmlInclude(typeof(TimestampedOutputState))]
     [XmlInclude(typeof(TimestampedInputState))]
-    [Description("Filters and selects specific messages reported by the CameraController device.")]
+    [Description("Filters and selects specific messages reported by the CameraControllerGen2 device.")]
     public partial class Parse : ParseBuilder, INamedElement
     {
         /// <summary>
@@ -247,12 +247,12 @@ namespace Harp.CameraController
             Register = new Cam0Event();
         }
 
-        string INamedElement.Name => $"{nameof(CameraController)}.{GetElementDisplayName(Register)}";
+        string INamedElement.Name => $"{nameof(CameraControllerGen2)}.{GetElementDisplayName(Register)}";
     }
 
     /// <summary>
     /// Represents an operator which formats a sequence of values as specific
-    /// CameraController register messages.
+    /// CameraControllerGen2 register messages.
     /// </summary>
     /// <seealso cref="Cam0Event"/>
     /// <seealso cref="Cam1Event"/>
@@ -304,7 +304,7 @@ namespace Harp.CameraController
     [XmlInclude(typeof(OutputToggle))]
     [XmlInclude(typeof(OutputState))]
     [XmlInclude(typeof(InputState))]
-    [Description("Formats a sequence of values as specific CameraController register messages.")]
+    [Description("Formats a sequence of values as specific CameraControllerGen2 register messages.")]
     public partial class Format : FormatBuilder, INamedElement
     {
         /// <summary>
@@ -315,7 +315,7 @@ namespace Harp.CameraController
             Register = new Cam0Event();
         }
 
-        string INamedElement.Name => $"{nameof(CameraController)}.{GetElementDisplayName(Register)}";
+        string INamedElement.Name => $"{nameof(CameraControllerGen2)}.{GetElementDisplayName(Register)}";
     }
 
     /// <summary>
@@ -2739,7 +2739,7 @@ namespace Harp.CameraController
 
     /// <summary>
     /// Represents an operator which creates standard message payloads for the
-    /// CameraController device.
+    /// CameraControllerGen2 device.
     /// </summary>
     /// <seealso cref="CreateCam0EventPayload"/>
     /// <seealso cref="CreateCam1EventPayload"/>
@@ -2791,7 +2791,7 @@ namespace Harp.CameraController
     [XmlInclude(typeof(CreateOutputTogglePayload))]
     [XmlInclude(typeof(CreateOutputStatePayload))]
     [XmlInclude(typeof(CreateInputStatePayload))]
-    [Description("Creates standard message payloads for the CameraController device.")]
+    [Description("Creates standard message payloads for the CameraControllerGen2 device.")]
     public partial class CreateMessage : CreateMessageBuilder, INamedElement
     {
         /// <summary>
@@ -2802,7 +2802,7 @@ namespace Harp.CameraController
             Payload = new CreateCam0EventPayload();
         }
 
-        string INamedElement.Name => $"{nameof(CameraController)}.{GetElementDisplayName(Payload)}";
+        string INamedElement.Name => $"{nameof(CameraControllerGen2)}.{GetElementDisplayName(Payload)}";
     }
 
     /// <summary>
