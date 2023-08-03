@@ -1,15 +1,15 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <Title>Harp - CameraControllerGen2</Title>
+    <Title>Harp - CameraController Gen2</Title>
     <Authors>harp-tech</Authors>
     <Copyright>Copyright © harp-tech and Contributors 2023</Copyright>
     <IncludeSymbols>true</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     <GeneratePackageOnBuild Condition="'$(Configuration)'=='Release'">true</GeneratePackageOnBuild>
-    <Description>Bonsai Library containing interfaces for data acquisition and control of Harp CameraControllerGen2 devices.</Description>
+    <Description>Bonsai Library containing interfaces for data acquisition and control of Harp CameraController Gen2 devices.</Description>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    <PackageTags>Harp CameraControllerGen2 Bonsai Rx</PackageTags>
+    <PackageTags>Harp CameraController Gen2 Bonsai Rx</PackageTags>
     <PackageProjectUrl>https://harp-tech.org</PackageProjectUrl>
     <RepositoryUrl>https://github.com/harp-tech/device.cameracontrollergen2.git</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
